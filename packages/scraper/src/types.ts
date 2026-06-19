@@ -13,6 +13,23 @@ export interface ScrapeOptions {
   forceRefresh?: boolean;
 }
 
+export interface ChapterData {
+  name: string;
+  url: string;
+  number: number;
+}
+
+export interface BookDiscovery {
+  bookCode: string;
+  bookUrlValue: string;
+  bookTitle: string;
+  classValue: string;
+  subjectText: string;
+  ln: string;
+  language: import('@ncert-library/types').Language;
+  maxChapters: number;
+}
+
 export interface ScrapeResult {
   success: boolean;
   bookCode: string;
@@ -24,6 +41,7 @@ export interface ScrapeResult {
   chaptersDownloaded: number;
   errors: string[];
   duration: number;
+  chapters?: ChapterData[];
 }
 
 export interface NcertDropdownOption {

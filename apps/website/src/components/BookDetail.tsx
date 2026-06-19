@@ -5,6 +5,20 @@ interface BookDetailProps {
   bookCode: string;
 }
 
+// NCERT publishes a pre-merged whole-book PDF at /textbook/pdf/<bookCode>.pdf.
+// We link to it directly. We previously tried to fetch & merge chapter PDFs
+// client-side via pdf-lib, but ncert.nic.in does not send CORS headers, so
+// every fetch from the browser was blocked, the loop swallowed each failure
+// and the merge "succeeded" with an empty document.
+//
+// Direct anchor links bypass CORS entirely (the browser navigates / saves the
+// resource itself), so both the per-chapter and full-book buttons now just
+// resolve to a URL on ncert.nic.in.
+const NCERT_BASE = 'https://ncert.nic.in';
+
+const buildMergedBookUrl = (bookCode: string, fallbackDownloadUrl?: string) =>
+  fallbackDownloadUrl ?? `${NCERT_BASE}/textbook/pdf/${bookCode}.pdf`;
+
 export default function BookDetail({ bookCode }: BookDetailProps) {
   const [book, setBook] = useState<BookMetadata | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,6 +74,9 @@ export default function BookDetail({ bookCode }: BookDetailProps) {
     .replace(/-/g, ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
+  const mergedBookUrl = buildMergedBookUrl(bookCode, book.downloadUrl);
+  const safeTitle = book.title.replace(/[^a-z0-9]/gi, '_');
+
   return (
     <div class="animate-fade-in">
       <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-8">
@@ -108,6 +125,34 @@ export default function BookDetail({ bookCode }: BookDetailProps) {
               </span>
             )}
           </div>
+
+          {/* Download Buttons */}
+          <div class="flex flex-col sm:flex-row gap-3 mt-6">
+            <a
+              href={mergedBookUrl}
+              download={`${bookCode}-${safeTitle}.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="download-full-book"
+              class="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm bg-ncert-600 text-white rounded-lg font-medium hover:bg-ncert-700 transition-colors"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3M7 4h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"
+                />
+              </svg>
+              Download Full Book (PDF)
+            </a>
+          </div>
         </div>
 
         <div class="lg:col-span-1">
@@ -121,24 +166,6 @@ export default function BookDetail({ bookCode }: BookDetailProps) {
                   <dt class="text-gray-500 dark:text-gray-400">Chapters</dt>
                   <dd class="font-medium text-gray-900 dark:text-gray-100">
                     {book.numberOfChapters}
-                  </dd>
-                </div>
-              )}
-              {book.pageCount && (
-                <div class="flex justify-between">
-                  <dt class="text-gray-500 dark:text-gray-400">Pages</dt>
-                  <dd class="font-medium text-gray-900 dark:text-gray-100">
-                    {book.pageCount}
-                  </dd>
-                </div>
-              )}
-              {book.fileSize && (
-                <div class="flex justify-between">
-                  <dt class="text-gray-500 dark:text-gray-400">Size</dt>
-                  <dd class="font-medium text-gray-900 dark:text-gray-100">
-                    {book.fileSize > 1048576
-                      ? `${(book.fileSize / 1048576).toFixed(1)} MB`
-                      : `${(book.fileSize / 1024).toFixed(0)} KB`}
                   </dd>
                 </div>
               )}
@@ -160,41 +187,70 @@ export default function BookDetail({ bookCode }: BookDetailProps) {
       </div>
 
       <div class="mt-12">
-        <h2 class="text-xl font-display font-bold text-ncert-900 dark:text-ncert-100 mb-6">
-          Chapters
-        </h2>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-display font-bold text-ncert-900 dark:text-ncert-100">
+            Chapters
+          </h2>
+        </div>
+
         <div class="space-y-2">
-          {book.chapters.map((chapter, i) => (
-            <a
-              key={chapter.number}
-              href={chapter.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center justify-between p-4 rounded-lg border border-paper-200/50 bg-white/80 dark:bg-gray-900/80 dark:border-gray-800 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200 group"
-            >
-              <div class="flex items-center gap-4">
-                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-ncert-100 dark:bg-ncert-900/30 text-ncert-700 dark:text-ncert-300 text-sm font-semibold shrink-0">
-                  {chapter.number}
-                </span>
-                <span class="font-medium text-gray-900 dark:text-gray-100 group-hover:text-ncert-600 dark:group-hover:text-ncert-400 transition-colors">
-                  {chapter.name}
-                </span>
-              </div>
-              <svg aria-hidden="true"
-                class="w-5 h-5 text-gray-400 group-hover:text-ncert-500 transition-colors shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+          {book.chapters.map((chapter) => {
+            const chapterFilename = `${bookCode}-${String(chapter.number).padStart(2, '0')}-${chapter.name
+              .replace(/[<>:"/\\|?*]/g, '_')
+              .replace(/\s+/g, '_')
+              .toLowerCase()}.pdf`;
+            return (
+              <div
+                key={chapter.number}
+                class="flex items-center justify-between p-4 rounded-lg border border-paper-200/50 bg-white/80 dark:bg-gray-900/80 dark:border-gray-800 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200 group"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-            </a>
-          ))}
+                <div class="flex items-center gap-4 flex-1 min-w-0">
+                  <span class="flex items-center justify-center w-8 h-8 rounded-full bg-ncert-100 dark:bg-ncert-900/30 text-ncert-700 dark:text-ncert-300 text-sm font-semibold shrink-0">
+                    {chapter.number}
+                  </span>
+                  <span class="font-medium text-gray-900 dark:text-gray-100 truncate">
+                    {chapter.name}
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <a
+                    href={chapter.url}
+                    download={chapterFilename}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid={`download-chapter-${chapter.number}`}
+                    class="px-3 py-1.5 text-xs bg-ncert-600 text-white rounded font-medium hover:bg-ncert-700 transition-colors"
+                  >
+                    Download
+                  </a>
+                  <a
+                    href={chapter.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-xs text-gray-500 hover:text-ncert-600 transition-colors"
+                    title="Open on NCERT website"
+                    aria-label={`Open chapter ${chapter.number} (${chapter.name}) on NCERT website`}
+                  >
+                    <span class="sr-only">Open on NCERT website</span>
+                    <svg
+                      aria-hidden="true"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

@@ -26,8 +26,9 @@ jobs:
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+        # version is read from package.json's packageManager field
+        # (pnpm@10.10.0). Setting both here and in package.json errors
+        # with "Multiple versions of pnpm specified".
 
       - uses: actions/setup-node@v4
         with:
@@ -41,12 +42,19 @@ jobs:
         run: pnpm build
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install chromium
+        # Run from the scraper package — playwright is a dep there but not
+        # at the workspace root, so `pnpm exec playwright` from the root
+        # errors with ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL.
+        run: pnpm --filter=@ncert-library/scraper exec playwright install chromium
 
       - name: Run scraper
         run: pnpm scrape
         env:
-          OUTPUT_DIR: ./data/chapters
+          # The scraper writes books.json to ${OUTPUT_DIR}/metadata/books.json
+          # and the metadata generator (packages/metadata/src/cli/generate.ts)
+          # reads from ${DATA_DIR}/metadata/books.json. Both must point at
+          # the same directory or the pipeline silently produces no output.
+          OUTPUT_DIR: ./data
           FORCE_REFRESH: ${{ github.event.inputs.force || false }}
 
       - name: Merge PDFs
@@ -54,6 +62,11 @@ jobs:
         env:
           CHAPTERS_DIR: ./data/chapters
           OUTPUT_DIR: ./data/merged
+        # Don't fail the whole pipeline if no chapter PDFs were downloaded
+        # (the scraper currently runs in metadata-only mode). The merge step
+        # is a best-effort enrichment for the website's `/data/merged/*.pdf`
+        # fast path; the buttons fall back to NCERT's hosted PDF without it.
+        continue-on-error: true
 
       - name: Generate metadata
         run: pnpm generate:metadata
@@ -75,6 +88,16 @@ jobs:
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
 
+      - name: Upload scrape stats artefact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-stats
+          path: |
+            data/scrape-stats.json
+            data/metadata/books.json
+          if-no-files-found: warn
+
       - name: Check for changes
         id: changes
         run: |
@@ -87,7 +110,7 @@ jobs:
           fi
 
       - name: Commit and push
-        if: steps.changes.outputs.has_changes == 'true'
+        if: steps.changes.outputs.has_changes == 'true' && github.ref == 'refs/heads/main'
         run: |
           git config --local user.email "bot@ncert-library.org"
           git config --local user.name "NCERT Library Bot"

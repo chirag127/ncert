@@ -2,25 +2,25 @@ import type {
   ChapterInfo,
   GradeLevel,
   Language,
-  Subject as SubjectType,
+  Subject,
 } from '@ncert-library/types';
-import * as cheerio from 'cheerio';
 import { type Browser, chromium } from 'playwright';
 import type { NcertBookPage, ScrapeOptions, ScrapeResult } from './types.js';
 
 const NCERT_BASE = 'https://ncert.nic.in';
-const TEXTBOOK_URL = `${NCERT_BASE}/textbook.php`;
+const PDF_BASE = `${NCERT_BASE}/textbook/pdf`;
 
-const SUBJECT_MAP: Record<string, SubjectType> = {
+const SUBJECT_MAP: Record<string, Subject> = {
   mathematics: 'mathematics',
   math: 'mathematics',
   maths: 'mathematics',
+  ganit: 'mathematics',
   science: 'science',
+  vigyan: 'science',
   'social science': 'social-science',
-  social: 'social-science',
+  'social studies': 'social-science',
   english: 'english',
   hindi: 'hindi',
-  'hindi language': 'hindi',
   sanskrit: 'sanskrit',
   physics: 'physics',
   chemistry: 'chemistry',
@@ -28,7 +28,6 @@ const SUBJECT_MAP: Record<string, SubjectType> = {
   history: 'history',
   geography: 'geography',
   'political science': 'political-science',
-  'political theory': 'political-theory',
   economics: 'economics',
   accountancy: 'accountancy',
   'business studies': 'business-studies',
@@ -37,20 +36,93 @@ const SUBJECT_MAP: Record<string, SubjectType> = {
   psychology: 'psychology',
   sociology: 'sociology',
   philosophy: 'philosophy',
-  'heritage crafts': 'heritage-crafts',
+  'fine art': 'fine-arts',
   'fine arts': 'fine-arts',
-  'graphic design': 'graphic-design',
   music: 'music',
+  sangeet: 'music',
   dance: 'dance',
   'physical education': 'physical-education',
-  'health and physical education': 'health-and-physical-education',
-  'environmental studies': 'environmental-studies',
-  'general knowledge': 'general-knowledge',
-  'value education': 'value-education',
-  'work experience': 'work-experience',
-  'art education': 'art-education',
+  'home science': 'other',
   urdu: 'urdu',
+  arts: 'art-education',
+  biotechnology: 'other',
+  'creative writing': 'other',
+  'environmental studies': 'environmental-studies',
+  evs: 'environmental-studies',
 };
+
+const HINDI_SUBJECT_MAP: Record<string, Subject> = {
+  // Maths
+  गणित: 'mathematics',
+  // Science (general + branches)
+  विज्ञान: 'science',
+  भौतिकी: 'physics',
+  'भौतिक विज्ञान': 'physics',
+  रसायन: 'chemistry',
+  'रसायन विज्ञान': 'chemistry',
+  जीव: 'biology',
+  'जीव विज्ञान': 'biology',
+  जीवविज्ञान: 'biology',
+  'जीवविज्ञान भाग': 'biology',
+  'जैव प्रौद्योगिकी': 'other',
+  // Social science
+  'सामाजिक विज्ञान': 'social-science',
+  इतिहास: 'history',
+  भूगोल: 'geography',
+  राजनीति: 'political-science',
+  'राजनीति विज्ञान': 'political-science',
+  अर्थशास्त्र: 'economics',
+  समाजशास्त्र: 'sociology',
+  // Languages
+  हिंदी: 'hindi',
+  हिन्दी: 'hindi',
+  अंग्रेज़ी: 'english',
+  अंग्रेजी: 'english',
+  संस्कृत: 'sanskrit',
+  उर्दू: 'urdu',
+  // Commerce & humanities
+  लेखाकर्म: 'accountancy',
+  लेखाशास्त्र: 'accountancy',
+  व्यवसाय: 'business-studies',
+  'व्यवसाय अध्ययन': 'business-studies',
+  मनोविज्ञान: 'psychology',
+  दर्शनशास्त्र: 'philosophy',
+  // Arts & misc.
+  'गृह विज्ञान': 'other',
+  'पर्यावरण अध्ययन': 'environmental-studies',
+  'शारीरिक शिक्षा': 'physical-education',
+  कला: 'art-education',
+  संगीत: 'music',
+  नृत्य: 'dance',
+  'कंप्यूटर विज्ञान': 'computer-science',
+  'सूचना प्रौद्योगिकी': 'informatics-practices',
+};
+
+const CLASS_VALUE_MAP: Record<string, GradeLevel> = {
+  '1': 'class-1',
+  '2': 'class-2',
+  '3': 'class-3',
+  '4': 'class-4',
+  '5': 'class-5',
+  '6': 'class-6',
+  '7': 'class-7',
+  '8': 'class-8',
+  '9': 'class-9',
+  '10': 'class-10',
+  '11': 'class-11',
+  '12': 'class-12',
+};
+
+interface DiscoveredBook {
+  bookCode: string;
+  bookUrlValue: string;
+  bookTitle: string;
+  classValue: string;
+  subjectText: string;
+  ln: string;
+  language: Language;
+  maxChapters: number;
+}
 
 export class NcertScraper {
   private browser: Browser | null = null;
@@ -60,7 +132,7 @@ export class NcertScraper {
     this.options = {
       outputDir: options.outputDir ?? './data/chapters',
       headless: options.headless ?? true,
-      concurrency: options.concurrency ?? 3,
+      concurrency: options.concurrency ?? 2,
       timeout: options.timeout ?? 60000,
       retryAttempts: options.retryAttempts ?? 3,
       retryDelay: options.retryDelay ?? 2000,
@@ -86,289 +158,262 @@ export class NcertScraper {
 
   async scrapeAllBooks(): Promise<ScrapeResult[]> {
     if (!this.browser) await this.initialize();
-    const results: ScrapeResult[] = [];
 
-    const classCodes = await this.getClassCodes();
-    for (const classCode of classCodes) {
-      const subjects = await this.getSubjectsForClass(classCode);
-      for (const subject of subjects) {
-        const books = await this.getBooksForSubject(classCode, subject.value);
-        for (const book of books) {
-          try {
-            const result = await this.scrapeBook(
-              classCode,
-              subject.value,
-              book.value,
-            );
-            results.push(result);
-          } catch (error) {
-            console.error(`Failed to scrape book ${book.text}:`, error);
-          }
-        }
+    const discovered = await this.discoverAllBooks();
+    console.log(`\nDiscovered ${discovered.length} books total`);
+
+    const englishBooks = discovered.filter((b) => b.language === 'english');
+    const hindiBooks = discovered.filter((b) => b.language === 'hindi');
+    console.log(
+      `Processing ${englishBooks.length} English + ${hindiBooks.length} Hindi books`,
+    );
+
+    const results: ScrapeResult[] = [];
+    for (const book of discovered) {
+      try {
+        const result = this.buildBookResult(book);
+        results.push(result);
+      } catch (error) {
+        console.error(
+          `  \u2717 ${book.bookTitle}: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
     }
 
     return results;
   }
 
-  private async getClassCodes(): Promise<string[]> {
-    const page = await this.browser!.newPage();
-    try {
-      await page.goto(TEXTBOOK_URL, { waitUntil: 'networkidle' });
-      await page.waitForSelector('select[name="aerd1"]', { timeout: 10000 });
-      const codes = await page.evaluate(() => {
-        const select = document.querySelector('select[name="aerd1"]');
-        if (!select) return [];
-        return Array.from(select.querySelectorAll('option'))
-          .filter((o) => o.value && o.value !== '..')
-          .map((o) => o.value);
-      });
-      return codes;
-    } finally {
-      await page.close();
-    }
-  }
-
-  private async getSubjectsForClass(
-    classCode: string,
-  ): Promise<Array<{ value: string; text: string }>> {
-    const page = await this.browser!.newPage();
-    try {
-      await page.goto(`${TEXTBOOK_URL}?aerd1=${classCode}`, {
-        waitUntil: 'networkidle',
-      });
-      await page.waitForTimeout(1000);
-      const subjects = await page.evaluate(() => {
-        const select = document.querySelector('select[name="aerd2"]');
-        if (!select) return [];
-        return Array.from(select.querySelectorAll('option'))
-          .filter((o) => o.value && o.value !== '..')
-          .map((o) => ({ value: o.value, text: o.textContent?.trim() ?? '' }));
-      });
-      return subjects;
-    } finally {
-      await page.close();
-    }
-  }
-
-  private async getBooksForSubject(
-    classCode: string,
-    subjectCode: string,
-  ): Promise<Array<{ value: string; text: string }>> {
-    const page = await this.browser!.newPage();
-    try {
-      await page.goto(
-        `${TEXTBOOK_URL}?aerd1=${classCode}&aerd2=${subjectCode}`,
-        {
-          waitUntil: 'networkidle',
-        },
-      );
-      await page.waitForTimeout(1000);
-      const books = await page.evaluate(() => {
-        const select = document.querySelector('select[name="aerd3"]');
-        if (!select) return [];
-        return Array.from(select.querySelectorAll('option'))
-          .filter((o) => o.value && o.value !== '..')
-          .map((o) => ({ value: o.value, text: o.textContent?.trim() ?? '' }));
-      });
-      return books;
-    } finally {
-      await page.close();
-    }
-  }
-
-  async scrapeBook(
-    classCode: string,
-    subjectCode: string,
-    bookCode: string,
-  ): Promise<ScrapeResult> {
-    const startTime = Date.now();
-    const page = await this.browser!.newPage();
-    const errors: string[] = [];
-
-    try {
-      const url = `${TEXTBOOK_URL}?aerd1=${classCode}&aerd2=${subjectCode}&aerd3=${bookCode}`;
-      await page.goto(url, {
-        waitUntil: 'networkidle',
-        timeout: this.options.timeout,
-      });
-      await page.waitForTimeout(2000);
-
-      const html = await page.content();
-      const bookData = await this.parseBookPage(html, classCode);
-
-      const classLevel = this.parseClassLevel(classCode);
-      const subject = this.parseSubject(bookData.title, classCode, subjectCode);
-      const lang: Language = this.detectLanguage(classCode);
-
-      const chaptersDownloaded = this.options.skipDownload
-        ? 0
-        : await this.downloadChapters(bookData.chapters, bookCode);
-
-      return {
-        success: true,
-        bookCode,
-        title: bookData.title,
-        class: classLevel,
-        subject,
-        language: lang,
-        chaptersScraped: bookData.chapters.length,
-        chaptersDownloaded,
-        errors,
-        duration: Date.now() - startTime,
-      };
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      errors.push(message);
-      return {
-        success: false,
-        bookCode,
-        title: '',
-        class: 'class-1' as GradeLevel,
-        subject: 'other' as SubjectType,
-        language: 'english' as Language,
-        chaptersScraped: 0,
-        chaptersDownloaded: 0,
-        errors,
-        duration: Date.now() - startTime,
-      };
-    } finally {
-      await page.close();
-    }
-  }
-
-  private async parseBookPage(
-    html: string,
-    _classCode: string,
-  ): Promise<NcertBookPage> {
-    const $ = cheerio.load(html);
-    const chapters: NcertBookPage['chapters'] = [];
-    let title = '';
-
-    const contentDiv = $('.content_main, #content, main').first();
-    title =
-      contentDiv.find('h1').first().text().trim() ??
-      $('title').text().replace('NCERT', '').trim() ??
-      '';
-
-    const downloadLink = $('a[href*="download"]').first().attr('href');
-    const downloadUrl = downloadLink
-      ? downloadLink.startsWith('http')
-        ? downloadLink
-        : `${NCERT_BASE}/${downloadLink.replace(/^\//, '')}`
-      : undefined;
-
-    const coverImg = $('img.cover, img[alt*="cover"], img[src*="cover"]')
-      .first()
-      .attr('src');
-    const coverImage = coverImg
-      ? coverImg.startsWith('http')
-        ? coverImg
-        : `${NCERT_BASE}/${coverImg.replace(/^\//, '')}`
-      : undefined;
-
-    let chapterIndex = 0;
-    $(
-      'a[href*="chapter"], a[href*="gesc"], a[href*="hesc"], a[href*="aesc"], a[href*="fesc"], a[href*="iesc"], a[href*="kefa"], a[href*="lemo"], a[href*="meps"], a[href*="nepa"], a[href*="pepa"], a[href*="qesc"], a[href*="resc"], a[href*="sesc"], a[href*="t esc"], a[href*="uesc"], a[href*="vesc"], a[href*="wesc"]',
-    ).each((_, el) => {
-      const href = $(el).attr('href');
-      const text = $(el).text().trim();
-      if (
-        href &&
-        text &&
-        !text.toLowerCase().includes('rationalised') &&
-        !text.toLowerCase().includes('prelims')
-      ) {
-        const url = href.startsWith('http')
-          ? href
-          : `${NCERT_BASE}/${href.replace(/^\//, '')}`;
-        chapterIndex++;
-        chapters.push({
-          name: text,
-          url,
-          number: chapterIndex,
-        });
-      }
+  private async discoverAllBooks(): Promise<DiscoveredBook[]> {
+    const allBooks: DiscoveredBook[] = [];
+    const context = await this.browser!.newContext({
+      userAgent:
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     });
+    const page = await context.newPage();
 
-    return { title, chapters, coverImage, downloadUrl };
-  }
+    try {
+      for (const ln of ['en', 'hi'] as const) {
+        const language: Language = ln === 'en' ? 'english' : 'hindi';
+        console.log(`\n[PW] Loading NCERT textbook page for ${language}...`);
 
-  private async downloadChapters(
-    chapters: Array<{ name: string; url: string; number: number }>,
-    _bookCode: string,
-  ): Promise<number> {
-    let downloaded = 0;
-    for (const chapter of chapters) {
-      try {
-        const response = await fetch(chapter.url);
-        if (response.ok) {
-          downloaded++;
+        await page.goto(`${NCERT_BASE}/textbook.php?ln=${ln}`, {
+          waitUntil: 'domcontentloaded',
+          timeout: 30000,
+        });
+        await page.waitForSelector('select[name="tclass"]', { timeout: 15000 });
+
+        const classOptions = await page.evaluate(() => {
+          const select = document.querySelector(
+            'select[name="tclass"]',
+          ) as HTMLSelectElement | null;
+          if (!select) return [];
+          return Array.from(select.options)
+            .filter((o) => o.value && o.value !== '-1')
+            .map((o) => ({ value: o.value, text: o.text.trim() }));
+        });
+
+        console.log(
+          `  Found ${classOptions.length} classes: ${classOptions.map((c) => c.value).join(',')}`,
+        );
+
+        let classCount = 0;
+        for (const cls of classOptions) {
+          classCount++;
+          console.log(
+            `  Class ${cls.value} (${cls.text}) [${classCount}/${classOptions.length}]`,
+          );
+
+          await page.selectOption('select[name="tclass"]', cls.value);
+          await page.waitForTimeout(2000);
+
+          try {
+            await page.waitForLoadState('networkidle', { timeout: 10000 });
+            await page.waitForSelector(
+              'select[name="tsubject"] option:not([value="-1"])',
+              {
+                timeout: 6000,
+              },
+            );
+          } catch {
+            console.log(`    No subjects found for class ${cls.value}`);
+            continue;
+          }
+
+          const subjectOptions = await page.evaluate(() => {
+            const select = document.querySelector(
+              'select[name="tsubject"]',
+            ) as HTMLSelectElement | null;
+            if (!select) return [];
+            const opts = Array.from(select.options)
+              .filter((o) => o.value && o.value !== '-1' && o.text.trim())
+              .map((o) => ({ value: o.value, text: o.text.trim() }));
+            console.log(
+              `    Found ${opts.length} subjects for class ${cls.value}`,
+            );
+            return opts;
+          });
+
+          for (const subject of subjectOptions) {
+            await page.selectOption('select[name="tsubject"]', subject.value);
+            await page.waitForTimeout(2000);
+
+            try {
+              await page.waitForLoadState('networkidle', { timeout: 10000 });
+              await page.waitForSelector(
+                'select[name="tbook"] option:not([value="-1"])',
+                { timeout: 6000 },
+              );
+            } catch {
+              continue;
+            }
+
+            const bookOptions = await page.evaluate(() => {
+              const select = document.querySelector(
+                'select[name="tbook"]',
+              ) as HTMLSelectElement | null;
+              if (!select) return [];
+              return Array.from(select.options)
+                .filter((o) => o.value && o.value !== '-1' && o.text.trim())
+                .map((o) => ({ value: o.value, text: o.text.trim() }));
+            });
+
+            console.log(
+              `      Found ${bookOptions.length} books for ${subject.text}`,
+            );
+
+            for (const book of bookOptions) {
+              const bookCode = this.extractBookCode(book.value);
+              const maxCh = this.extractMaxChapters(book.value);
+
+              allBooks.push({
+                bookCode,
+                bookUrlValue: book.value,
+                bookTitle: book.text,
+                classValue: cls.value,
+                subjectText: subject.text,
+                ln,
+                language,
+                maxChapters: maxCh,
+              });
+            }
+          }
         }
-      } catch {
-        // Chapter download failed
       }
+    } finally {
+      await context.close();
     }
-    return downloaded;
+
+    return allBooks;
   }
 
-  private parseClassLevel(classCode: string): GradeLevel {
-    const num = Number.parseInt(classCode.split('-')[0] ?? '1');
-    const map: Record<number, GradeLevel> = {
-      0: 'balvatika-1',
-      1: 'class-1',
-      2: 'class-2',
-      3: 'class-3',
-      4: 'class-4',
-      5: 'class-5',
-      6: 'class-6',
-      7: 'class-7',
-      8: 'class-8',
-      9: 'class-9',
-      10: 'class-10',
-      11: 'class-11',
-      12: 'class-12',
+  private buildBookResult(book: DiscoveredBook): ScrapeResult {
+    const chapters: NcertBookPage['chapters'] = [];
+
+    for (let i = 1; i <= book.maxChapters; i++) {
+      const chNum = String(i).padStart(2, '0');
+      chapters.push({
+        number: i,
+        name: `Chapter ${i}`,
+        url: `${PDF_BASE}/${book.bookCode}${chNum}.pdf`,
+      });
+    }
+
+    const classLevel = this.parseClassLevel(book.classValue);
+    const subject = this.detectSubject(
+      book.bookTitle,
+      book.subjectText,
+      book.language,
+    );
+
+    return {
+      success: true,
+      bookCode: book.bookCode,
+      title: book.bookTitle,
+      class: classLevel,
+      subject:
+        book.language === 'hindi'
+          ? this.detectSubjectHindi(book.bookTitle)
+          : subject,
+      language: book.language,
+      chaptersScraped: chapters.length,
+      chaptersDownloaded: 0,
+      errors: [],
+      duration: 0,
+      chapters,
     };
-    return map[num] ?? 'class-1';
   }
 
-  private parseSubject(
+  private extractBookCode(bookUrlValue: string): string {
+    const match = bookUrlValue.match(/\?([a-z]+\d+)=/i);
+    if (match?.[1]) {
+      return match[1];
+    }
+    return bookUrlValue.replace(/[^a-z0-9]/gi, '');
+  }
+
+  private extractMaxChapters(bookUrlValue: string): number {
+    const match = bookUrlValue.match(/=(\d+)-(\d+)/);
+    if (match?.[2]) {
+      return Number.parseInt(match[2], 10);
+    }
+    const match2 = bookUrlValue.match(/-(\d+)$/);
+    if (match2?.[1]) {
+      return Number.parseInt(match2[1], 10);
+    }
+    return 15;
+  }
+
+  private parseClassLevel(classValue: string): GradeLevel {
+    return CLASS_VALUE_MAP[classValue] ?? 'class-1';
+  }
+
+  private detectSubject(
     title: string,
-    _classCode: string,
-    _subjectCode: string,
-  ): SubjectType {
-    void _classCode;
-    void _subjectCode;
+    subjectText: string,
+    language: Language,
+  ): Subject {
     const lower = title.toLowerCase();
     for (const [key, value] of Object.entries(SUBJECT_MAP)) {
+      if (lower.includes(key)) return value;
+    }
+
+    const subjectLower = subjectText.toLowerCase();
+    for (const [key, value] of Object.entries(SUBJECT_MAP)) {
+      if (subjectLower.includes(key)) return value;
+    }
+
+    if (language === 'hindi') {
+      for (const [key, value] of Object.entries(HINDI_SUBJECT_MAP)) {
+        if (lower.includes(key)) return value;
+      }
+    }
+
+    return 'other';
+  }
+
+  private detectSubjectHindi(title: string): Subject {
+    const lower = title.toLowerCase();
+    for (const [key, value] of Object.entries(HINDI_SUBJECT_MAP)) {
       if (lower.includes(key)) return value;
     }
     return 'other';
   }
 
-  private detectLanguage(_classCode: string): Language {
-    return 'english';
-  }
-
   async getBookChapterUrls(
-    classCode: string,
-    subjectCode: string,
-    _bookCode: string,
+    _classValue: string,
+    _subjectValue: string,
+    bookCode: string,
+    _ln: string,
   ): Promise<ChapterInfo[]> {
-    const page = await this.browser!.newPage();
-    try {
-      const url = `${TEXTBOOK_URL}?aerd1=${classCode}&aerd2=${subjectCode}&aerd3=${_bookCode}`;
-      await page.goto(url, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(2000);
-      const html = await page.content();
-      const bookData = await this.parseBookPage(html, classCode);
-      return bookData.chapters.map((ch, i) => ({
-        number: i + 1,
-        name: ch.name,
-        url: ch.url,
-      }));
-    } finally {
-      await page.close();
+    const chapters: ChapterInfo[] = [];
+    for (let i = 1; i <= 20; i++) {
+      const chNum = String(i).padStart(2, '0');
+      chapters.push({
+        number: i,
+        name: `Chapter ${i}`,
+        url: `${PDF_BASE}/${bookCode}${chNum}.pdf`,
+      });
     }
+    return chapters;
   }
 }

@@ -1,0 +1,95 @@
+---
+/*
+ * /[class]/[subject]/[lang].astro — book download page.
+ *
+ * Shows title + metadata + a big "Download PDF" button linking to the
+ * GitHub Releases artefact (PDFs are NOT hosted on CF Pages).
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import {
+  classLabel,
+  langLabel,
+  loadCatalog,
+  subjectLabel,
+} from '~/lib/catalog'
+import type { NcertEntry } from '~/lib/catalog'
+
+export function getStaticPaths() {
+  return loadCatalog().map((b) => ({
+    params: { class: b.class, subject: b.subject, lang: b.lang },
+    props: { book: b },
+  }))
+}
+
+interface Props { book: NcertEntry }
+const { book } = Astro.props as Props
+const title = `${book.title} — NCERT`
+const description = `Download ${book.title} (${classLabel(book.class)} · ${subjectLabel(book.subject)} · ${langLabel(book.lang)}). Merged NCERT chapter PDFs.`
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: book.title,
+  bookFormat: 'https://schema.org/EBook',
+  inLanguage: book.lang,
+  description,
+  url: book.pdf_url,
+  publisher: { '@type': 'Organization', name: 'NCERT' },
+}
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class="spine">
+    <header class="page-head">
+      <p class="eyebrow mono">
+        <a href="/">NCERT</a> /
+        <a href={`/${book.class}/`}>{classLabel(book.class).toUpperCase()}</a> /
+        {subjectLabel(book.subject).toUpperCase()}
+      </p>
+      <h1>{book.title}</h1>
+      <dl class="meta">
+        <div><dt>Class</dt><dd>{classLabel(book.class)}</dd></div>
+        <div><dt>Subject</dt><dd>{subjectLabel(book.subject)}</dd></div>
+        <div><dt>Language</dt><dd>{langLabel(book.lang)}</dd></div>
+      </dl>
+    </header>
+
+    <section class="cta">
+      <a class="dl-btn" href={book.pdf_url} download>
+        Download PDF
+      </a>
+      <p class="cta-note mono">
+        Served from GitHub Releases. PDFs are merged from ncert.nic.in
+        chapter PDFs via qpdf.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head { padding-block: clamp(1.5rem, 4vw, 2.5rem) 1.25rem; border-bottom: 1px solid var(--rule); }
+  .eyebrow { margin: 0 0 0.75rem; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); }
+  .eyebrow a { color: inherit; text-decoration: none; }
+  .eyebrow a:hover { color: var(--cinnabar); }
+  h1 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; }
+  .meta { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1.25rem 0 0; padding: 0; }
+  .meta > div { display: flex; flex-direction: column; }
+  .meta dt { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
+  .meta dd { margin: 0.15rem 0 0; font-family: var(--font-display); font-size: 1rem; color: var(--ink); }
+  .cta { padding-block: 2rem; }
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 1.5rem;
+    background: var(--cinnabar);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--cinnabar);
+  }
+  .dl-btn:hover { background: transparent; color: var(--cinnabar); }
+  .cta-note { margin-top: 1rem; font-size: 11px; color: var(--ink-mute); max-width: 50ch; }
+</style>

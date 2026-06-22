@@ -1,0 +1,35 @@
+name: Merge NCERT PDFs
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 1 * *'  # 1st of every month at 04:00 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install qpdf
+        run: sudo apt-get update && sudo apt-get install -y qpdf
+      - name: Stub merge pipeline
+        run: |
+          mkdir -p out
+          echo "TODO: implement real merge pipeline.
+
+          The real job will:
+            1. Read data/books.json
+            2. For each entry, fetch every chapter PDF from ncert.nic.in
+            3. Run: qpdf --empty --pages chapter*.pdf -- {class}-{subject}-{lang}.pdf
+            4. Upload all PDFs as a GitHub Release.
+          " > out/README.txt
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0-stub
+          name: 'NCERT merged PDFs (stub)'
+          files: out/*
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

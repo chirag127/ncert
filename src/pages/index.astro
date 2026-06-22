@@ -1,21 +1,23 @@
 ---
-import BookGrid from '~/components/BookGrid.tsx'
 /*
- * Home — catalogue-card grid on the wooden desk surface.
+ * Home — NCERT class picker.
  *
- * Per the v2 brief:
- *   - Filter rail left (Class, Subject, Medium with subject swatches)
- *   - Card grid right, 5×3 cards on a typical viewport, 280×168 catalogue
- *     ratio, 24px gap
- *   - Eyebrow + page title `Class — Subject` style above the grid (the
- *     spec calls for `Class 8 — Science` H1 styling but on the index we
- *     use the catalogue title)
+ * v0 layout (per spec):
+ *   - Eyebrow + page title
+ *   - Class picker: tile for every class (Pre-Primary, 1–12)
+ *   - Each tile links to /[class]/
  *
- * NO hero illustration of stacked books, NO graduation cap, NO "Featured /
- * Trending" carousel. This page IS the catalogue.
+ * The legacy React BookGrid (catalogue with chapters) lives at
+ * /book/[bookCode] for the Class IX–XII subset that has chapter-level
+ * metadata; the homepage is intentionally lean.
  */
 import BaseLayout from '~/layouts/BaseLayout.astro'
+import { CLASSES, classLabel, loadCatalog } from '~/lib/catalog'
 import { SITE_CONFIG } from '~/lib/siteConfig'
+
+const catalog = loadCatalog()
+const counts = new Map<string, number>()
+for (const b of catalog) counts.set(b.class, (counts.get(b.class) ?? 0) + 1)
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -24,11 +26,6 @@ const jsonLd = {
   url: SITE_CONFIG.origin,
   description: SITE_CONFIG.description,
   publisher: { '@type': 'Person', name: 'Chirag Singhal' },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${SITE_CONFIG.origin}/?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
 }
 ---
 
@@ -39,50 +36,61 @@ const jsonLd = {
 >
   <div class="spine">
     <header class="cat-head">
-      <p class="eyebrow mono">NCERT · CLASS I — XII · ENGLISH · हिंदी</p>
-      <h1>The catalogue.</h1>
+      <p class="eyebrow mono">NCERT · PRE-PRIMARY — CLASS XII · ENGLISH · हिंदी</p>
+      <h1>NCERT.</h1>
       <p class="lede">
-        A flat directory of NCERT textbooks. Filter by class, subject, and
-        medium; click a card to open chapters and the merged-book PDF on
-        ncert.nic.in. No popups, no paywall, no required sign-in.
+        A flat directory of merged NCERT textbook PDFs. Pick a class, then a
+        subject and language. Each PDF is built from official ncert.nic.in
+        chapter PDFs via <code>qpdf</code> and shipped from GitHub Releases.
+        No popups, no ads, no required sign-in.
       </p>
     </header>
 
-    <BookGrid client:load />
+    <section class="class-grid" aria-label="Pick a class">
+      {CLASSES.map((cls) => (
+        <a class="class-tile" href={`/${cls}/`}>
+          <span class="class-label mono">{cls === 'pre-primary' ? 'PRE' : cls}</span>
+          <span class="class-name">{classLabel(cls)}</span>
+          <span class="class-count mono">{counts.get(cls) ?? 0} books</span>
+        </a>
+      ))}
+    </section>
+
+    <p class="foot mono">
+      <a href="/about/">About</a> · <a href="https://github.com/chirag127/oriz-ncert-app">Source</a>
+    </p>
   </div>
 </BaseLayout>
 
 <style>
-  .cat-head {
-    padding-block: clamp(1.5rem, 4vw, 2.5rem) 1.25rem;
-    border-bottom: 1px solid var(--rule);
+  .cat-head { padding-block: clamp(1.5rem, 4vw, 2.5rem) 1.25rem; border-bottom: 1px solid var(--rule); }
+  .eyebrow { margin: 0 0 0.75rem; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); }
+  .cat-head h1 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.0; }
+  .lede { margin: 1rem 0 0; color: var(--ink-mute); max-width: 60ch; font-size: 1.0625rem; }
+  .lede code { font-family: var(--font-mono); font-size: 0.875em; color: var(--cinnabar); }
+  .class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 2rem 0;
   }
-  .eyebrow {
-    margin: 0 0 0.75rem;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    font-feature-settings:
-      'tnum' 1,
-      'zero' 1,
-      'ss20' 1,
-      'calt' 0;
-  }
-  .cat-head h1 {
-    margin: 0;
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    letter-spacing: -0.005em;
-    line-height: 1.05;
+  .class-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem;
+    background: var(--card, #1a1d24);
+    border: 1px solid var(--rule);
+    text-decoration: none;
     color: var(--ink);
+    min-height: 100px;
+    transition: border-color 80ms linear;
   }
-  .lede {
-    margin: 1rem 0 0;
-    color: var(--ink-mute);
-    max-width: 60ch;
-    font-size: 1.0625rem;
-  }
+  .class-tile:hover { border-color: var(--cinnabar); }
+  .class-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cinnabar); }
+  .class-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 500; }
+  .class-count { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin-top: auto; }
+  .foot { margin: 2rem 0; font-size: 11px; color: var(--ink-mute); }
+  .foot a { color: inherit; }
+  .foot a:hover { color: var(--cinnabar); }
 </style>

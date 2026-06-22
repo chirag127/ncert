@@ -1,4 +1,4 @@
-name = "oriz-books"
+name = "oriz-ncert"
 compatibility_date = "2026-06-17"
 compatibility_flags = ["nodejs_compat"]
 
@@ -7,4 +7,4 @@ directory = "./dist"
 not_found_handling = "404-page"
 
 # Custom domain bound via dashboard:
-#   books.oriz.in -> oriz-books
+#   ncert.oriz.in -> oriz-ncert

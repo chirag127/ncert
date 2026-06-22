@@ -3,51 +3,50 @@ import BaseLayout from '~/layouts/BaseLayout.astro'
 ---
 
 <BaseLayout
-  title="About — Books"
-  description="What books.oriz.in is and why it exists."
+  title="About — NCERT"
+  description="What ncert.oriz.in is and why it exists."
 >
   <div class="spine-prose">
     <header class="page-head">
       <p class="eyebrow"><a href="/">CATALOGUE</a> / ABOUT</p>
-      <h1>About oriz · books.</h1>
+      <h1>About oriz · ncert.</h1>
     </header>
 
     <article class="prose">
       <p class="lede">
-        <strong>Books</strong> is a flat directory of NCERT textbooks for
-        India's school curriculum (Class I — XII). It is a static site —
-        every page is pre-built, every download is a direct link to
-        <a href="https://ncert.nic.in/">ncert.nic.in</a>. Nothing is hosted
-        on this domain.
+        <strong>NCERT</strong> is a flat directory of merged NCERT textbook
+        PDFs for India's school curriculum (Pre-Primary through Class XII).
+        It is a static site — every page is pre-built; PDFs are not hosted
+        on this domain, only on GitHub Releases.
       </p>
 
       <h2>Why this exists</h2>
       <p>
-        The official NCERT site works, but it is slow, hard to navigate, and
-        its links break often. Books gives you one filter rail and one card
-        grid: pick a class, pick a subject, pick a medium, click the card.
-        No popups, no ads (yet), no required sign-in, no PDF interception.
+        The official NCERT site (<a href="https://ncert.nic.in/">ncert.nic.in</a>)
+        works, but each chapter is a separate download. This site offers one
+        merged PDF per book, built from the official chapter PDFs via
+        <code>qpdf</code> in a GitHub Action. No popups, no ads, no required
+        sign-in.
       </p>
 
-      <h2>What you get</h2>
-      <ul>
-        <li>Full directory of NCERT textbooks with metadata.</li>
-        <li>One-click download of individual chapters or the merged full-book PDF.</li>
-        <li>Search across titles, subjects, chapters, and keywords (Hindi and English).</li>
-        <li>Optional sign-in — shared with the rest of <a href="https://oriz.in/">oriz</a> — to bookmark books.</li>
-      </ul>
-
-      <h2>Where the data comes from</h2>
+      <h2>Copyright</h2>
       <p>
-        The catalogue is scraped from <code>ncert.nic.in</code> by a Playwright
-        pipeline in this repo's <code>tools/</code> folder, normalised into
-        <code>public/data/metadata/books.json</code>, and committed back to git.
-        Every page on this site is rebuilt from that JSON.
+        NCERT material is freely redistributable per NCERT's policy — these
+        are the official chapter PDFs from <a href="https://ncert.nic.in/">ncert.nic.in</a>
+        merged for convenience. NCERT logos and trademarks belong to NCERT.
+      </p>
+
+      <h2>How it's built</h2>
+      <p>
+        A monthly GitHub Action downloads chapter PDFs from <code>ncert.nic.in</code>,
+        merges them with <code>qpdf --empty --pages …</code>, and uploads the
+        resulting <code>{`{class}-{subject}-{lang}.pdf`}</code> bundles as a
+        GitHub Release. The site links to those release assets.
       </p>
 
       <h2>oriz family</h2>
       <p>
-        Books is one of eleven sites in the
+        NCERT is one of the apps in the
         <a href="https://oriz.in/">oriz</a> family. Use the family menu in
         the footer to jump between them.
       </p>
@@ -55,7 +54,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro'
       <h2>Source code</h2>
       <p>
         MIT-licensed, hosted at
-        <a href="https://github.com/chirag127/oriz-books">github.com/chirag127/oriz-books</a>.
+        <a href="https://github.com/chirag127/oriz-ncert-app">github.com/chirag127/oriz-ncert-app</a>.
         Issues and PRs welcome.
       </p>
     </article>

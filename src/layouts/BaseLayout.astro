@@ -21,7 +21,7 @@ import '@fontsource/ibm-plex-mono'
 import Header from '~/components/Header.astro'
 import AppSidebarContent from '~/components/AppSidebarContent.astro'
 import Sidebar from '@chirag127/astro-chrome/Sidebar.astro'
-import Footer from '@chirag127/astro-chrome/Footer.astro'
+import Footer from '~/components/Footer.astro'
 import BottomBar from '@chirag127/astro-chrome/BottomBar.astro'
 import { SITE_CONFIG } from '~/lib/siteConfig'
 import { bottomBarActions } from '~/data/bottombar-actions'
@@ -95,6 +95,15 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
         />
       )
     }
+
+    {import.meta.env.PUBLIC_ADSENSE_CLIENT && (
+      <script
+        is:inline
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.PUBLIC_ADSENSE_CLIENT}`}
+        crossorigin="anonymous"
+      />
+    )}
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>

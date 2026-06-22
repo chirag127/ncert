@@ -1,0 +1,109 @@
+---
+/*
+ * /browse — full list of every (class, subject, language) entry.
+ * Lazy v0: a flat table, indigo links to the existing /[class]/[subject]/[lang]/ pages.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import { loadCatalog, classLabel, subjectLabel, langLabel } from '~/lib/catalog'
+
+const catalog = loadCatalog()
+const sorted = [...catalog].sort((a, b) => {
+  const ca = a.class === 'pre-primary' ? -1 : Number.parseInt(a.class, 10)
+  const cb = b.class === 'pre-primary' ? -1 : Number.parseInt(b.class, 10)
+  if (ca !== cb) return ca - cb
+  if (a.subject !== b.subject) return a.subject.localeCompare(b.subject)
+  return a.lang.localeCompare(b.lang)
+})
+---
+
+<BaseLayout title="Browse — NCERT" description="Every NCERT textbook, listed.">
+  <div class="browse-wrap">
+    <header class="browse-head">
+      <p class="eyebrow">CATALOGUE / BROWSE</p>
+      <h1>Browse the catalogue</h1>
+      <p class="lede">Every merged NCERT textbook PDF, by class × subject × language.</p>
+    </header>
+
+    <div class="browse-table" role="table">
+      <div class="browse-row browse-row--head" role="row">
+        <span role="columnheader">Class</span>
+        <span role="columnheader">Subject</span>
+        <span role="columnheader">Language</span>
+        <span role="columnheader">Title</span>
+      </div>
+      {sorted.map((e) => (
+        <a class="browse-row" role="row" href={`/${e.class}/${e.subject}/${e.lang}/`}>
+          <span role="cell">{classLabel(e.class)}</span>
+          <span role="cell">{subjectLabel(e.subject)}</span>
+          <span role="cell">{langLabel(e.lang)}</span>
+          <span role="cell">{e.title}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .browse-wrap {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem) 3rem;
+  }
+  .browse-head {
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .browse-head .eyebrow {
+    font-family: var(--font-utility);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--color-muted);
+    margin: 0 0 0.75rem;
+  }
+  .browse-head h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--color-fg);
+    letter-spacing: -0.015em;
+  }
+  .browse-head .lede {
+    margin: 0.75rem 0 0;
+    color: var(--color-muted);
+    font-size: 1rem;
+  }
+  .browse-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    background: #faf6ec;
+  }
+  .browse-row {
+    display: grid;
+    grid-template-columns: 100px 1.5fr 100px 2.5fr;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--color-fg);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 14px;
+  }
+  .browse-row:last-child { border-bottom: 0; }
+  .browse-row:hover { background: var(--color-bg); color: var(--color-accent); }
+  .browse-row--head {
+    background: var(--color-bg);
+    font-family: var(--font-utility);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+  @media (max-width: 720px) {
+    .browse-row { grid-template-columns: 60px 1fr 60px; }
+    .browse-row span:last-child { display: none; }
+    .browse-row--head span:last-child { display: none; }
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+/*
+ * /sign-in — v0 stub. Real sign-in lives at /account/ where Firebase auth
+ * runs. This page exists so the route is reachable from the footer chrome.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Sign in — NCERT" description="Sign in to ncert.oriz.in (optional).">
+  <div class="spine-prose">
+    <header class="page-head">
+      <p class="eyebrow"><a href="/">CATALOGUE</a> / SIGN IN</p>
+      <h1>Sign in.</h1>
+    </header>
+    <article class="prose">
+      <p class="lede">
+        ncert.oriz.in does <strong>not require sign-in</strong>. Every PDF is
+        a static download — pick a class, subject, and language on the home
+        page, then download.
+      </p>
+      <p>
+        An optional account is offered for syncing your last-opened book and
+        bookmarks across devices. Go to <a href="/account/">/account</a> to
+        sign in with email or Google.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

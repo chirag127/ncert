@@ -1,23 +1,35 @@
 ---
 /*
- * Home — NCERT class picker.
+ * Home — 3-step picker hero per v0 locked design (2026-06-22).
  *
- * v0 layout (per spec):
- *   - Eyebrow + page title
- *   - Class picker: tile for every class (Pre-Primary, 1–12)
- *   - Each tile links to /[class]/
+ * Signature: 3 CASCADING COLUMNS (not a wizard).
+ *   Col 1: Class (Pre-K, 1..12) — buttons in indigo
+ *   Col 2: Subject (revealed once Class picked) — saffron when active
+ *   Col 3: Language (English / Hindi) — toggle
+ *   CTA below: "Download book" — enabled once all 3 picked.
  *
- * The legacy React BookGrid (catalogue with chapters) lives at
- * /book/[bookCode] for the Class IX–XII subset that has chapter-level
- * metadata; the homepage is intentionally lean.
+ * Data comes from data/books.json via loadCatalog(). Subjects are filtered
+ * per class. Click on CTA navigates to the existing /[class]/[subject]/[lang]/
+ * book page (or directly to the PDF URL when we have one in catalog).
  */
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import { CLASSES, classLabel, loadCatalog } from '~/lib/catalog'
+import PickerHero from '~/components/PickerHero.tsx'
+import { CLASSES, classLabel, subjectLabel, loadCatalog } from '~/lib/catalog'
 import { SITE_CONFIG } from '~/lib/siteConfig'
 
 const catalog = loadCatalog()
-const counts = new Map<string, number>()
-for (const b of catalog) counts.set(b.class, (counts.get(b.class) ?? 0) + 1)
+
+const classLabelMap: Record<string, string> = {}
+for (const c of CLASSES) classLabelMap[c] = classLabel(c)
+
+const subjectLabelMap: Record<string, string> = {}
+for (const e of catalog) {
+  if (!subjectLabelMap[e.subject]) subjectLabelMap[e.subject] = subjectLabel(e.subject)
+}
+// Ensure fallback subjects are labelled too.
+for (const s of ['math', 'science', 'english', 'hindi', 'social-science', 'evs']) {
+  if (!subjectLabelMap[s]) subjectLabelMap[s] = subjectLabel(s)
+}
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -34,63 +46,260 @@ const jsonLd = {
   description={SITE_CONFIG.description}
   jsonLd={jsonLd}
 >
-  <div class="spine">
-    <header class="cat-head">
-      <p class="eyebrow mono">NCERT · PRE-PRIMARY — CLASS XII · ENGLISH · हिंदी</p>
-      <h1>NCERT.</h1>
-      <p class="lede">
-        A flat directory of merged NCERT textbook PDFs. Pick a class, then a
-        subject and language. Each PDF is built from official ncert.nic.in
-        chapter PDFs via <code>qpdf</code> and shipped from GitHub Releases.
-        No popups, no ads, no required sign-in.
+  <div class="hero-wrap">
+    <header class="hero-head">
+      <p class="hero-eyebrow">NCERT · K–12 · ENGLISH · हिंदी</p>
+      <h1 class="hero-title">
+        Every NCERT textbook,<br />
+        <span class="hero-title-accent">merged into one PDF.</span>
+      </h1>
+      <p class="hero-lede">
+        Pick a class, subject, and language. Download the whole book as a single
+        PDF — built from the official ncert.nic.in chapter files, shipped via
+        GitHub Releases. No ads, no popups, no sign-in.
       </p>
     </header>
 
-    <section class="class-grid" aria-label="Pick a class">
-      {CLASSES.map((cls) => (
-        <a class="class-tile" href={`/${cls}/`}>
-          <span class="class-label mono">{cls === 'pre-primary' ? 'PRE' : cls}</span>
-          <span class="class-name">{classLabel(cls)}</span>
-          <span class="class-count mono">{counts.get(cls) ?? 0} books</span>
-        </a>
-      ))}
-    </section>
+    <PickerHero
+      client:load
+      entries={catalog}
+      classes={[...CLASSES]}
+      classLabel={classLabelMap}
+      subjectLabel={subjectLabelMap}
+    />
 
-    <p class="foot mono">
-      <a href="/about/">About</a> · <a href="https://github.com/chirag127/oriz-ncert-app">Source</a>
+    <p class="hero-foot">
+      <a href="/browse/">Browse the full catalogue →</a>
     </p>
   </div>
 </BaseLayout>
 
 <style>
-  .cat-head { padding-block: clamp(1.5rem, 4vw, 2.5rem) 1.25rem; border-bottom: 1px solid var(--rule); }
-  .eyebrow { margin: 0 0 0.75rem; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); }
-  .cat-head h1 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.0; }
-  .lede { margin: 1rem 0 0; color: var(--ink-mute); max-width: 60ch; font-size: 1.0625rem; }
-  .lede code { font-family: var(--font-mono); font-size: 0.875em; color: var(--cinnabar); }
-  .class-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    margin: 2rem 0;
+  .hero-wrap {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem) 3rem;
   }
-  .class-tile {
+
+  .hero-head {
+    padding-block: clamp(1rem, 4vw, 2rem) 1.5rem;
+  }
+  .hero-eyebrow {
+    margin: 0 0 0.875rem;
+    font-family: var(--font-utility);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .hero-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+  }
+  .hero-title-accent {
+    color: var(--color-accent);
+    border-bottom: 4px solid var(--color-saffron);
+    padding-bottom: 0.05em;
+  }
+  .hero-lede {
+    margin: 1.125rem 0 0;
+    color: var(--color-muted);
+    font-size: 1.0625rem;
+    max-width: 60ch;
+    line-height: 1.6;
+  }
+
+  .hero-foot {
+    margin-top: 2rem;
+    font-family: var(--font-utility);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .hero-foot a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2px;
+  }
+  .hero-foot a:hover {
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* Picker — 3 cascading columns. Scoped styles get hoisted to the page so
+     they're available to the React island (Astro scopes via data- attrs by
+     default, so we use :global to reach the island's class names). */
+  :global(.picker) {
+    margin-top: 1.75rem;
+  }
+  :global(.picker-grid) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    background: #faf6ec;
+    border: 1px solid var(--color-border);
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+  }
+  @media (max-width: 880px) {
+    :global(.picker-grid) {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+
+  :global(.picker-col) {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    padding: 1rem;
-    background: var(--card, #1a1d24);
-    border: 1px solid var(--rule);
-    text-decoration: none;
-    color: var(--ink);
-    min-height: 100px;
-    transition: border-color 80ms linear;
+    min-height: 280px;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    transition: opacity 0.15s ease;
   }
-  .class-tile:hover { border-color: var(--cinnabar); }
-  .class-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cinnabar); }
-  .class-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 500; }
-  .class-count { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin-top: auto; }
-  .foot { margin: 2rem 0; font-size: 11px; color: var(--ink-mute); }
-  .foot a { color: inherit; }
-  .foot a:hover { color: var(--cinnabar); }
+  :global(.picker-col--disabled) {
+    opacity: 0.55;
+  }
+  :global(.picker-head) {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    margin-bottom: 0.875rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  :global(.picker-step) {
+    font-family: var(--font-utility);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--color-saffron);
+    font-weight: 600;
+  }
+  :global(.picker-title) {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+  }
+
+  :global(.picker-options) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-content: flex-start;
+  }
+  :global(.picker-options--classes) {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  :global(.picker-hint) {
+    margin: 0;
+    font-family: var(--font-utility);
+    font-size: 12px;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  :global(.opt) {
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.1s ease;
+    border-radius: 0;
+  }
+  :global(.opt:hover) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  :global(.opt:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Class buttons — indigo when active */
+  :global(.opt--class.opt--active) {
+    background: var(--color-accent);
+    color: #faf6ec;
+    border-color: var(--color-accent);
+  }
+  /* Subject — saffron when active */
+  :global(.opt--subject.opt--active) {
+    background: var(--color-saffron);
+    color: #1a1a1a;
+    border-color: var(--color-saffron);
+  }
+  /* Language — indigo outlined when active */
+  :global(.opt--lang) {
+    flex: 1 1 auto;
+    min-width: 96px;
+  }
+  :global(.opt--lang.opt--active) {
+    background: var(--color-accent);
+    color: #faf6ec;
+    border-color: var(--color-accent);
+  }
+
+  :global(.picker-cta) {
+    margin-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+  :global(.picker-btn) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-accent);
+    color: #faf6ec;
+    border: 1px solid var(--color-accent);
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: all 0.1s ease;
+    cursor: pointer;
+  }
+  :global(.picker-btn:hover) {
+    background: #1f1c5c;
+  }
+  :global(.picker-btn--disabled) {
+    background: #d6d0c2;
+    color: var(--color-muted);
+    border-color: var(--color-border);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  :global(.picker-summary) {
+    margin: 0;
+    font-family: var(--font-utility);
+    font-size: 12px;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+  :global(.picker-summary strong) {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
 </style>

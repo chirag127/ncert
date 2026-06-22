@@ -1,0 +1,91 @@
+/*
+ * tokens.css — v0 locked design palette per 2026-06-22 brief.
+ *
+ * Forces ONE parchment theme (no toggle). Overrides global.css's dark tokens
+ * AND the @media (prefers-color-scheme) variants so the visual is identical
+ * across OS theme preferences.
+ *
+ * Brief tokens:
+ *   --color-bg       #F4EDE0  parchment
+ *   --color-fg       #1A1A1A  ink
+ *   --color-accent   #312E81  indigo
+ *   --color-saffron  #F59E0B
+ *   --color-muted    #525252
+ *   --color-border   rgba(26,26,26,0.12)
+ *
+ * Existing legacy tokens (--paper, --card, --cinnabar, --indigo, --brass,
+ * --graphite, --rule, --ink, --ink-mute) are re-mapped to the new palette so
+ * Header/Footer/Sidebar/BottomBar styles keep working with zero per-file edits.
+ */
+
+:root,
+:root[data-theme],
+html {
+  color-scheme: light !important;
+
+  /* v0 locked palette */
+  --color-bg: #f4ede0;
+  --color-fg: #1a1a1a;
+  --color-accent: #312e81;
+  --color-saffron: #f59e0b;
+  --color-muted: #525252;
+  --color-border: rgba(26, 26, 26, 0.12);
+
+  /* Type stack */
+  --font-display: 'Inter Tight', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', 'Inter Variable', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-utility: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Legacy alias remap — surface */
+  --paper: var(--color-bg);
+  --paper-deep: #ebe2d2;
+  --card: #faf6ec;
+  --card-shade: #ebe2d2;
+  --ink: var(--color-fg);
+  --ink-mute: var(--color-muted);
+  --rule: var(--color-border);
+
+  /* Legacy alias remap — accents */
+  --cinnabar: var(--color-accent); /* primary CTA = indigo, not red */
+  --indigo: var(--color-accent);
+  --brass: var(--color-saffron);
+  --graphite: var(--color-fg);
+  --graphite-soft: var(--color-muted);
+
+  /* Card-on-card text */
+  --on-card: var(--color-fg);
+  --on-card-mute: var(--color-muted);
+  --on-card-rule: var(--color-border);
+
+  /* Borrowed-selector aliases */
+  --mustard: var(--color-saffron);
+  --vermilion: var(--color-accent);
+  --ledger: var(--color-saffron);
+  --highlighter: var(--color-saffron);
+
+  /* Font remap (legacy --font-sans/--font-mono) */
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-utility);
+}
+
+/* Hard-override the @media (prefers-color-scheme) blocks from global.css. */
+@media (prefers-color-scheme: dark),
+       (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --paper: var(--color-bg);
+    --card: #faf6ec;
+    --ink: var(--color-fg);
+    --ink-mute: var(--color-muted);
+    --rule: var(--color-border);
+    --cinnabar: var(--color-accent);
+    --indigo: var(--color-accent);
+    --brass: var(--color-saffron);
+  }
+}
+
+body {
+  background: var(--color-bg) !important;
+  color: var(--color-fg) !important;
+  font-family: var(--font-body) !important;
+}

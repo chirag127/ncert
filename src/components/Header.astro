@@ -16,6 +16,7 @@
  * chrome ships zero React.
  */
 import Wordmark from './Wordmark.astro'
+import { signInUrl } from '@chirag127/astro-shell/auth-gate'
 ---
 
 <header class="header">
@@ -39,7 +40,7 @@ import Wordmark from './Wordmark.astro'
     </form>
 
     <div class="header-right">
-      <a href="/account/" class="header-chip" aria-label="Sign in or account">
+      <a href={signInUrl()} class="header-chip" aria-label="Sign in or account">
         <span class="chip-dot" aria-hidden="true"></span>
         <span class="chip-label mono">SIGN IN</span>
       </a>
@@ -107,6 +108,13 @@ import Wordmark from './Wordmark.astro'
     top: 0;
     z-index: 50;
     background: var(--paper);
+  }
+  nav a,
+  .header a {
+    min-height: 32px;
+    padding: 6px 0;
+    display: inline-flex;
+    align-items: center;
   }
   .header-row {
     display: grid;

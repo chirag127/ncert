@@ -26,7 +26,7 @@
     "@astrojs/sitemap": "^3.2.0",
     "@chirag127/astro-chrome": "^0.1.7",
     "@chirag127/astro-data": "^0.1.1",
-    "@chirag127/astro-shell": "^0.2.1",
+    "@chirag127/astro-shell": "^0.3.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/inter-tight": "^5.2.7",
     "@fontsource/ibm-plex-mono": "^5.2.7",

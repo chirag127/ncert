@@ -23,6 +23,7 @@ import AppSidebarContent from '~/components/AppSidebarContent.astro'
 import Sidebar from '@chirag127/astro-chrome/Sidebar.astro'
 import Footer from '~/components/Footer.astro'
 import BottomBar from '@chirag127/astro-chrome/BottomBar.astro'
+import FamilyChrome from '@chirag127/astro-shell/components/FamilyChrome.astro'
 import { SITE_CONFIG } from '~/lib/siteConfig'
 import { bottomBarActions } from '~/data/bottombar-actions'
 
@@ -106,6 +107,7 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
     )}
   </head>
   <body>
+    <FamilyChrome slug="oriz-ncert-app" title="NCERT" accent="#c08a26" />
     <a href="#main" class="skip-link">Skip to content</a>
     {hideHeader ? (
       <main id="main"><slot /></main>

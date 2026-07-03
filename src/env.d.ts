@@ -1,5 +1,10 @@
 /// <reference path="../.astro/types.d.ts" />
 
+// Side-effect font imports have no .d.ts shipped upstream
+declare module '@fontsource-variable/inter'
+declare module '@fontsource-variable/inter-tight'
+declare module '@fontsource/ibm-plex-mono'
+
 interface ImportMetaEnv {
   readonly PUBLIC_FIREBASE_API_KEY: string
   readonly PUBLIC_FIREBASE_AUTH_DOMAIN: string

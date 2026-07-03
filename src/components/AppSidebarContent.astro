@@ -5,9 +5,18 @@
  */
 const classes = [
   { label: 'Pre-Primary', items: [{ href: '/pre-k/', label: 'Pre-K' }] },
-  { label: 'Primary (1-5)', items: [1, 2, 3, 4, 5].map((c) => ({ href: `/class/${c}/`, label: `Class ${c}` })) },
-  { label: 'Middle/Secondary (6-10)', items: [6, 7, 8, 9, 10].map((c) => ({ href: `/class/${c}/`, label: `Class ${c}` })) },
-  { label: 'Senior Secondary (11-12)', items: [11, 12].map((c) => ({ href: `/class/${c}/`, label: `Class ${c}` })) },
+  {
+    label: 'Primary (1-5)',
+    items: [1, 2, 3, 4, 5].map((c) => ({ href: `/class/${c}/`, label: `Class ${c}` })),
+  },
+  {
+    label: 'Middle/Secondary (6-10)',
+    items: [6, 7, 8, 9, 10].map((c) => ({ href: `/class/${c}/`, label: `Class ${c}` })),
+  },
+  {
+    label: 'Senior Secondary (11-12)',
+    items: [11, 12].map((c) => ({ href: `/class/${c}/`, label: `Class ${c}` })),
+  },
   {
     label: 'Subjects',
     items: ['Maths', 'Science', 'English', 'Hindi', 'Social Studies'].map((s) => ({

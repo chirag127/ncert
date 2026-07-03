@@ -4,7 +4,7 @@
  * Lazy v0: a flat table, indigo links to the existing /[class]/[subject]/[lang]/ pages.
  */
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import { loadCatalog, classLabel, subjectLabel, langLabel } from '~/lib/catalog'
+import { classLabel, langLabel, loadCatalog, subjectLabel } from '~/lib/catalog'
 
 const catalog = loadCatalog()
 const sorted = [...catalog].sort((a, b) => {

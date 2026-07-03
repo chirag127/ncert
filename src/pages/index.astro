@@ -1,4 +1,5 @@
 ---
+import PickerHero from '~/components/PickerHero.tsx'
 /*
  * Home — 3-step picker hero per v0 locked design (2026-06-22).
  *
@@ -13,8 +14,7 @@
  * book page (or directly to the PDF URL when we have one in catalog).
  */
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import PickerHero from '~/components/PickerHero.tsx'
-import { CLASSES, classLabel, subjectLabel, loadCatalog } from '~/lib/catalog'
+import { CLASSES, classLabel, loadCatalog, subjectLabel } from '~/lib/catalog'
 import { SITE_CONFIG } from '~/lib/siteConfig'
 
 const catalog = loadCatalog()

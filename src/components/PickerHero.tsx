@@ -64,16 +64,14 @@ export default function PickerHero({ entries, classes, classLabel, subjectLabel 
   useEffect(() => {
     setSubject(null)
     setLang(null)
-  }, [cls])
+  }, [])
   useEffect(() => {
     setLang(null)
-  }, [subject])
+  }, [])
 
   const target = useMemo(() => {
     if (!cls || !subject || !lang) return null
-    const hit = entries.find(
-      (e) => e.class === cls && e.subject === subject && e.lang === lang,
-    )
+    const hit = entries.find((e) => e.class === cls && e.subject === subject && e.lang === lang)
     return hit?.pdf_url ?? `/${cls}/${subject}/${lang}/`
   }, [cls, subject, lang, entries])
 

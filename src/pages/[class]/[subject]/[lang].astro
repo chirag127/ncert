@@ -6,13 +6,8 @@
  * GitHub Releases artefact (PDFs are NOT hosted on CF Pages).
  */
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import {
-  classLabel,
-  langLabel,
-  loadCatalog,
-  subjectLabel,
-} from '~/lib/catalog'
 import type { NcertEntry } from '~/lib/catalog'
+import { classLabel, langLabel, loadCatalog, subjectLabel } from '~/lib/catalog'
 
 export function getStaticPaths() {
   return loadCatalog().map((b) => ({
@@ -21,7 +16,9 @@ export function getStaticPaths() {
   }))
 }
 
-interface Props { book: NcertEntry }
+interface Props {
+  book: NcertEntry
+}
 const { book } = Astro.props as Props
 const title = `${book.title} — NCERT`
 const description = `Download ${book.title} (${classLabel(book.class)} · ${subjectLabel(book.subject)} · ${langLabel(book.lang)}). Merged NCERT chapter PDFs.`

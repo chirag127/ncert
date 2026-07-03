@@ -6,13 +6,7 @@
  * selected class. Each tile links to /[class]/[subject]/[lang]/.
  */
 import BaseLayout from '~/layouts/BaseLayout.astro'
-import {
-  CLASSES,
-  classLabel,
-  langLabel,
-  loadCatalog,
-  subjectLabel,
-} from '~/lib/catalog'
+import { CLASSES, classLabel, langLabel, loadCatalog, subjectLabel } from '~/lib/catalog'
 
 export function getStaticPaths() {
   return CLASSES.map((cls) => ({ params: { class: cls } }))

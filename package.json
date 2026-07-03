@@ -13,7 +13,7 @@
     "preview": "astro preview",
     "deploy": "wrangler deploy",
     "typecheck": "astro check",
-    "lint": "biome check .",
+    "lint": "biome check src tools astro.config.mjs",
     "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",

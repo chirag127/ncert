@@ -61,14 +61,7 @@
       "pageCount": 280,
       "fileSize": 5242880,
       "sha256": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
-      "tags": [
-        "mathematics",
-        "class-12",
-        "ncert",
-        "cbse",
-        "calculus",
-        "algebra"
-      ],
+      "tags": ["mathematics", "class-12", "ncert", "cbse", "calculus", "algebra"],
       "keywords": [
         "mathematics",
         "maths",
@@ -162,15 +155,7 @@
       "pageCount": 320,
       "fileSize": 6291456,
       "sha256": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
-      "tags": [
-        "physics",
-        "class-12",
-        "ncert",
-        "cbse",
-        "electricity",
-        "magnetism",
-        "waves"
-      ],
+      "tags": ["physics", "class-12", "ncert", "cbse", "electricity", "magnetism", "waves"],
       "keywords": [
         "physics",
         "class 12",
@@ -316,14 +301,7 @@
         }
       ],
       "pageCount": 260,
-      "tags": [
-        "biology",
-        "class-12",
-        "ncert",
-        "cbse",
-        "genetics",
-        "reproduction"
-      ],
+      "tags": ["biology", "class-12", "ncert", "cbse", "genetics", "reproduction"],
       "keywords": [
         "biology",
         "class 12",

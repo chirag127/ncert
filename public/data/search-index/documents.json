@@ -3,14 +3,7 @@
   "totalBooks": 8,
   "documents": [
     {
-      "tags": [
-        "mathematics",
-        "class-12",
-        "ncert",
-        "cbse",
-        "calculus",
-        "algebra"
-      ],
+      "tags": ["mathematics", "class-12", "ncert", "cbse", "calculus", "algebra"],
       "bookCode": "hemh1",
       "className": "class-12",
       "editionYear": 2023,
@@ -40,15 +33,7 @@
       "title": "Mathematics Part I"
     },
     {
-      "tags": [
-        "physics",
-        "class-12",
-        "ncert",
-        "cbse",
-        "electricity",
-        "magnetism",
-        "waves"
-      ],
+      "tags": ["physics", "class-12", "ncert", "cbse", "electricity", "magnetism", "waves"],
       "bookCode": "leph1",
       "className": "class-12",
       "editionYear": 2023,
@@ -108,14 +93,7 @@
       "title": "Chemistry Part I"
     },
     {
-      "tags": [
-        "biology",
-        "class-12",
-        "ncert",
-        "cbse",
-        "genetics",
-        "reproduction"
-      ],
+      "tags": ["biology", "class-12", "ncert", "cbse", "genetics", "reproduction"],
       "bookCode": "lebo1",
       "className": "class-12",
       "editionYear": 2023,
@@ -143,15 +121,7 @@
       "title": "Biology"
     },
     {
-      "tags": [
-        "mathematics",
-        "class-10",
-        "ncert",
-        "cbse",
-        "algebra",
-        "geometry",
-        "trigonometry"
-      ],
+      "tags": ["mathematics", "class-10", "ncert", "cbse", "algebra", "geometry", "trigonometry"],
       "bookCode": "jemh1",
       "className": "class-10",
       "editionYear": 2023,
@@ -239,14 +209,7 @@
       "title": "Science"
     },
     {
-      "tags": [
-        "mathematics",
-        "class-9",
-        "ncert",
-        "cbse",
-        "algebra",
-        "geometry"
-      ],
+      "tags": ["mathematics", "class-9", "ncert", "cbse", "algebra", "geometry"],
       "bookCode": "iemh1",
       "className": "class-9",
       "editionYear": 2023,

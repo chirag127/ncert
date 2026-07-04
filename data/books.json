@@ -1,81 +1,483 @@
 [
-  { "class": "pre-primary", "subject": "rimjhim", "lang": "hi", "title": "Rimjhim (Pre-Primary)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/pre-primary-rimjhim-hi.pdf" },
+  {
+    "class": "pre-primary",
+    "subject": "rimjhim",
+    "lang": "hi",
+    "title": "Rimjhim (Pre-Primary)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/pre-primary-rimjhim-hi.pdf"
+  },
 
-  { "class": "1", "subject": "english", "lang": "en", "title": "Marigold I (Class 1)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-english-en.pdf" },
-  { "class": "1", "subject": "hindi", "lang": "hi", "title": "Rimjhim I (Class 1)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-hindi-hi.pdf" },
-  { "class": "1", "subject": "math", "lang": "en", "title": "Math-Magic I (Class 1)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-math-en.pdf" },
-  { "class": "1", "subject": "math", "lang": "hi", "title": "Ganit ka Jaadu I (Class 1)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-math-hi.pdf" },
+  {
+    "class": "1",
+    "subject": "english",
+    "lang": "en",
+    "title": "Marigold I (Class 1)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-english-en.pdf"
+  },
+  {
+    "class": "1",
+    "subject": "hindi",
+    "lang": "hi",
+    "title": "Rimjhim I (Class 1)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-hindi-hi.pdf"
+  },
+  {
+    "class": "1",
+    "subject": "math",
+    "lang": "en",
+    "title": "Math-Magic I (Class 1)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-math-en.pdf"
+  },
+  {
+    "class": "1",
+    "subject": "math",
+    "lang": "hi",
+    "title": "Ganit ka Jaadu I (Class 1)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/1-math-hi.pdf"
+  },
 
-  { "class": "2", "subject": "english", "lang": "en", "title": "Marigold II (Class 2)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/2-english-en.pdf" },
-  { "class": "2", "subject": "hindi", "lang": "hi", "title": "Rimjhim II (Class 2)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/2-hindi-hi.pdf" },
-  { "class": "2", "subject": "math", "lang": "en", "title": "Math-Magic II (Class 2)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/2-math-en.pdf" },
+  {
+    "class": "2",
+    "subject": "english",
+    "lang": "en",
+    "title": "Marigold II (Class 2)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/2-english-en.pdf"
+  },
+  {
+    "class": "2",
+    "subject": "hindi",
+    "lang": "hi",
+    "title": "Rimjhim II (Class 2)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/2-hindi-hi.pdf"
+  },
+  {
+    "class": "2",
+    "subject": "math",
+    "lang": "en",
+    "title": "Math-Magic II (Class 2)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/2-math-en.pdf"
+  },
 
-  { "class": "3", "subject": "english", "lang": "en", "title": "Marigold III (Class 3)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/3-english-en.pdf" },
-  { "class": "3", "subject": "math", "lang": "en", "title": "Math-Magic III (Class 3)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/3-math-en.pdf" },
-  { "class": "3", "subject": "evs", "lang": "en", "title": "Looking Around III (Class 3)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/3-evs-en.pdf" },
+  {
+    "class": "3",
+    "subject": "english",
+    "lang": "en",
+    "title": "Marigold III (Class 3)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/3-english-en.pdf"
+  },
+  {
+    "class": "3",
+    "subject": "math",
+    "lang": "en",
+    "title": "Math-Magic III (Class 3)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/3-math-en.pdf"
+  },
+  {
+    "class": "3",
+    "subject": "evs",
+    "lang": "en",
+    "title": "Looking Around III (Class 3)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/3-evs-en.pdf"
+  },
 
-  { "class": "4", "subject": "english", "lang": "en", "title": "Marigold IV (Class 4)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/4-english-en.pdf" },
-  { "class": "4", "subject": "math", "lang": "en", "title": "Math-Magic IV (Class 4)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/4-math-en.pdf" },
-  { "class": "4", "subject": "evs", "lang": "en", "title": "Looking Around IV (Class 4)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/4-evs-en.pdf" },
+  {
+    "class": "4",
+    "subject": "english",
+    "lang": "en",
+    "title": "Marigold IV (Class 4)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/4-english-en.pdf"
+  },
+  {
+    "class": "4",
+    "subject": "math",
+    "lang": "en",
+    "title": "Math-Magic IV (Class 4)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/4-math-en.pdf"
+  },
+  {
+    "class": "4",
+    "subject": "evs",
+    "lang": "en",
+    "title": "Looking Around IV (Class 4)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/4-evs-en.pdf"
+  },
 
-  { "class": "5", "subject": "english", "lang": "en", "title": "Marigold V (Class 5)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/5-english-en.pdf" },
-  { "class": "5", "subject": "math", "lang": "en", "title": "Math-Magic V (Class 5)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/5-math-en.pdf" },
-  { "class": "5", "subject": "evs", "lang": "en", "title": "Looking Around V (Class 5)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/5-evs-en.pdf" },
+  {
+    "class": "5",
+    "subject": "english",
+    "lang": "en",
+    "title": "Marigold V (Class 5)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/5-english-en.pdf"
+  },
+  {
+    "class": "5",
+    "subject": "math",
+    "lang": "en",
+    "title": "Math-Magic V (Class 5)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/5-math-en.pdf"
+  },
+  {
+    "class": "5",
+    "subject": "evs",
+    "lang": "en",
+    "title": "Looking Around V (Class 5)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/5-evs-en.pdf"
+  },
 
-  { "class": "6", "subject": "english", "lang": "en", "title": "Honeysuckle (Class 6)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-english-en.pdf" },
-  { "class": "6", "subject": "hindi", "lang": "hi", "title": "Vasant I (Class 6)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-hindi-hi.pdf" },
-  { "class": "6", "subject": "math", "lang": "en", "title": "Mathematics (Class 6)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-math-en.pdf" },
-  { "class": "6", "subject": "math", "lang": "hi", "title": "Ganit (Class 6)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-math-hi.pdf" },
-  { "class": "6", "subject": "science", "lang": "en", "title": "Science (Class 6)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-science-en.pdf" },
-  { "class": "6", "subject": "social-science", "lang": "en", "title": "Social Science (Class 6)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-social-science-en.pdf" },
+  {
+    "class": "6",
+    "subject": "english",
+    "lang": "en",
+    "title": "Honeysuckle (Class 6)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-english-en.pdf"
+  },
+  {
+    "class": "6",
+    "subject": "hindi",
+    "lang": "hi",
+    "title": "Vasant I (Class 6)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-hindi-hi.pdf"
+  },
+  {
+    "class": "6",
+    "subject": "math",
+    "lang": "en",
+    "title": "Mathematics (Class 6)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-math-en.pdf"
+  },
+  {
+    "class": "6",
+    "subject": "math",
+    "lang": "hi",
+    "title": "Ganit (Class 6)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-math-hi.pdf"
+  },
+  {
+    "class": "6",
+    "subject": "science",
+    "lang": "en",
+    "title": "Science (Class 6)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-science-en.pdf"
+  },
+  {
+    "class": "6",
+    "subject": "social-science",
+    "lang": "en",
+    "title": "Social Science (Class 6)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/6-social-science-en.pdf"
+  },
 
-  { "class": "7", "subject": "english", "lang": "en", "title": "Honeycomb (Class 7)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-english-en.pdf" },
-  { "class": "7", "subject": "hindi", "lang": "hi", "title": "Vasant II (Class 7)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-hindi-hi.pdf" },
-  { "class": "7", "subject": "math", "lang": "en", "title": "Mathematics (Class 7)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-math-en.pdf" },
-  { "class": "7", "subject": "science", "lang": "en", "title": "Science (Class 7)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-science-en.pdf" },
-  { "class": "7", "subject": "social-science", "lang": "en", "title": "Social Science (Class 7)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-social-science-en.pdf" },
+  {
+    "class": "7",
+    "subject": "english",
+    "lang": "en",
+    "title": "Honeycomb (Class 7)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-english-en.pdf"
+  },
+  {
+    "class": "7",
+    "subject": "hindi",
+    "lang": "hi",
+    "title": "Vasant II (Class 7)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-hindi-hi.pdf"
+  },
+  {
+    "class": "7",
+    "subject": "math",
+    "lang": "en",
+    "title": "Mathematics (Class 7)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-math-en.pdf"
+  },
+  {
+    "class": "7",
+    "subject": "science",
+    "lang": "en",
+    "title": "Science (Class 7)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-science-en.pdf"
+  },
+  {
+    "class": "7",
+    "subject": "social-science",
+    "lang": "en",
+    "title": "Social Science (Class 7)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/7-social-science-en.pdf"
+  },
 
-  { "class": "8", "subject": "english", "lang": "en", "title": "Honeydew (Class 8)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-english-en.pdf" },
-  { "class": "8", "subject": "hindi", "lang": "hi", "title": "Vasant III (Class 8)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-hindi-hi.pdf" },
-  { "class": "8", "subject": "math", "lang": "en", "title": "Mathematics (Class 8)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-math-en.pdf" },
-  { "class": "8", "subject": "science", "lang": "en", "title": "Science (Class 8)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-science-en.pdf" },
-  { "class": "8", "subject": "social-science", "lang": "en", "title": "Social Science (Class 8)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-social-science-en.pdf" },
+  {
+    "class": "8",
+    "subject": "english",
+    "lang": "en",
+    "title": "Honeydew (Class 8)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-english-en.pdf"
+  },
+  {
+    "class": "8",
+    "subject": "hindi",
+    "lang": "hi",
+    "title": "Vasant III (Class 8)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-hindi-hi.pdf"
+  },
+  {
+    "class": "8",
+    "subject": "math",
+    "lang": "en",
+    "title": "Mathematics (Class 8)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-math-en.pdf"
+  },
+  {
+    "class": "8",
+    "subject": "science",
+    "lang": "en",
+    "title": "Science (Class 8)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-science-en.pdf"
+  },
+  {
+    "class": "8",
+    "subject": "social-science",
+    "lang": "en",
+    "title": "Social Science (Class 8)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/8-social-science-en.pdf"
+  },
 
-  { "class": "9", "subject": "english", "lang": "en", "title": "Beehive (Class 9)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-english-en.pdf" },
-  { "class": "9", "subject": "hindi", "lang": "hi", "title": "Kshitij (Class 9)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-hindi-hi.pdf" },
-  { "class": "9", "subject": "math", "lang": "en", "title": "Mathematics (Class 9)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-math-en.pdf" },
-  { "class": "9", "subject": "science", "lang": "en", "title": "Science (Class 9)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-science-en.pdf" },
-  { "class": "9", "subject": "social-science", "lang": "en", "title": "Social Science (Class 9)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-social-science-en.pdf" },
+  {
+    "class": "9",
+    "subject": "english",
+    "lang": "en",
+    "title": "Beehive (Class 9)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-english-en.pdf"
+  },
+  {
+    "class": "9",
+    "subject": "hindi",
+    "lang": "hi",
+    "title": "Kshitij (Class 9)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-hindi-hi.pdf"
+  },
+  {
+    "class": "9",
+    "subject": "math",
+    "lang": "en",
+    "title": "Mathematics (Class 9)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-math-en.pdf"
+  },
+  {
+    "class": "9",
+    "subject": "science",
+    "lang": "en",
+    "title": "Science (Class 9)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-science-en.pdf"
+  },
+  {
+    "class": "9",
+    "subject": "social-science",
+    "lang": "en",
+    "title": "Social Science (Class 9)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/9-social-science-en.pdf"
+  },
 
-  { "class": "10", "subject": "english", "lang": "en", "title": "First Flight (Class 10)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-english-en.pdf" },
-  { "class": "10", "subject": "hindi", "lang": "hi", "title": "Kshitij II (Class 10)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-hindi-hi.pdf" },
-  { "class": "10", "subject": "math", "lang": "en", "title": "Mathematics (Class 10)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-math-en.pdf" },
-  { "class": "10", "subject": "science", "lang": "en", "title": "Science (Class 10)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-science-en.pdf" },
-  { "class": "10", "subject": "social-science", "lang": "en", "title": "Social Science (Class 10)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-social-science-en.pdf" },
+  {
+    "class": "10",
+    "subject": "english",
+    "lang": "en",
+    "title": "First Flight (Class 10)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-english-en.pdf"
+  },
+  {
+    "class": "10",
+    "subject": "hindi",
+    "lang": "hi",
+    "title": "Kshitij II (Class 10)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-hindi-hi.pdf"
+  },
+  {
+    "class": "10",
+    "subject": "math",
+    "lang": "en",
+    "title": "Mathematics (Class 10)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-math-en.pdf"
+  },
+  {
+    "class": "10",
+    "subject": "science",
+    "lang": "en",
+    "title": "Science (Class 10)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-science-en.pdf"
+  },
+  {
+    "class": "10",
+    "subject": "social-science",
+    "lang": "en",
+    "title": "Social Science (Class 10)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/10-social-science-en.pdf"
+  },
 
-  { "class": "11", "subject": "english", "lang": "en", "title": "Hornbill (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-english-en.pdf" },
-  { "class": "11", "subject": "math", "lang": "en", "title": "Mathematics (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-math-en.pdf" },
-  { "class": "11", "subject": "physics", "lang": "en", "title": "Physics (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-physics-en.pdf" },
-  { "class": "11", "subject": "chemistry", "lang": "en", "title": "Chemistry (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-chemistry-en.pdf" },
-  { "class": "11", "subject": "biology", "lang": "en", "title": "Biology (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-biology-en.pdf" },
-  { "class": "11", "subject": "history", "lang": "en", "title": "Themes in World History (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-history-en.pdf" },
-  { "class": "11", "subject": "geography", "lang": "en", "title": "Fundamentals of Physical Geography (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-geography-en.pdf" },
-  { "class": "11", "subject": "economics", "lang": "en", "title": "Indian Economic Development (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-economics-en.pdf" },
-  { "class": "11", "subject": "political-science", "lang": "en", "title": "Indian Constitution at Work (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-political-science-en.pdf" },
-  { "class": "11", "subject": "accountancy", "lang": "en", "title": "Financial Accounting I (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-accountancy-en.pdf" },
-  { "class": "11", "subject": "business-studies", "lang": "en", "title": "Business Studies (Class 11)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-business-studies-en.pdf" },
+  {
+    "class": "11",
+    "subject": "english",
+    "lang": "en",
+    "title": "Hornbill (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-english-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "math",
+    "lang": "en",
+    "title": "Mathematics (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-math-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "physics",
+    "lang": "en",
+    "title": "Physics (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-physics-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "chemistry",
+    "lang": "en",
+    "title": "Chemistry (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-chemistry-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "biology",
+    "lang": "en",
+    "title": "Biology (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-biology-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "history",
+    "lang": "en",
+    "title": "Themes in World History (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-history-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "geography",
+    "lang": "en",
+    "title": "Fundamentals of Physical Geography (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-geography-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "economics",
+    "lang": "en",
+    "title": "Indian Economic Development (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-economics-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "political-science",
+    "lang": "en",
+    "title": "Indian Constitution at Work (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-political-science-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "accountancy",
+    "lang": "en",
+    "title": "Financial Accounting I (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-accountancy-en.pdf"
+  },
+  {
+    "class": "11",
+    "subject": "business-studies",
+    "lang": "en",
+    "title": "Business Studies (Class 11)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/11-business-studies-en.pdf"
+  },
 
-  { "class": "12", "subject": "english", "lang": "en", "title": "Flamingo (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-english-en.pdf" },
-  { "class": "12", "subject": "math", "lang": "en", "title": "Mathematics (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-math-en.pdf" },
-  { "class": "12", "subject": "physics", "lang": "en", "title": "Physics (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-physics-en.pdf" },
-  { "class": "12", "subject": "chemistry", "lang": "en", "title": "Chemistry (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-chemistry-en.pdf" },
-  { "class": "12", "subject": "biology", "lang": "en", "title": "Biology (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-biology-en.pdf" },
-  { "class": "12", "subject": "history", "lang": "en", "title": "Themes in Indian History (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-history-en.pdf" },
-  { "class": "12", "subject": "geography", "lang": "en", "title": "Fundamentals of Human Geography (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-geography-en.pdf" },
-  { "class": "12", "subject": "economics", "lang": "en", "title": "Introductory Macroeconomics (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-economics-en.pdf" },
-  { "class": "12", "subject": "political-science", "lang": "en", "title": "Contemporary World Politics (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-political-science-en.pdf" },
-  { "class": "12", "subject": "sociology", "lang": "en", "title": "Indian Society (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-sociology-en.pdf" },
-  { "class": "12", "subject": "psychology", "lang": "en", "title": "Psychology (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-psychology-en.pdf" },
-  { "class": "12", "subject": "accountancy", "lang": "en", "title": "Accountancy: Partnership Firms & Companies (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-accountancy-en.pdf" },
-  { "class": "12", "subject": "business-studies", "lang": "en", "title": "Business Studies I (Class 12)", "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-business-studies-en.pdf" }
+  {
+    "class": "12",
+    "subject": "english",
+    "lang": "en",
+    "title": "Flamingo (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-english-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "math",
+    "lang": "en",
+    "title": "Mathematics (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-math-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "physics",
+    "lang": "en",
+    "title": "Physics (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-physics-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "chemistry",
+    "lang": "en",
+    "title": "Chemistry (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-chemistry-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "biology",
+    "lang": "en",
+    "title": "Biology (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-biology-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "history",
+    "lang": "en",
+    "title": "Themes in Indian History (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-history-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "geography",
+    "lang": "en",
+    "title": "Fundamentals of Human Geography (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-geography-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "economics",
+    "lang": "en",
+    "title": "Introductory Macroeconomics (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-economics-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "political-science",
+    "lang": "en",
+    "title": "Contemporary World Politics (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-political-science-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "sociology",
+    "lang": "en",
+    "title": "Indian Society (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-sociology-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "psychology",
+    "lang": "en",
+    "title": "Psychology (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-psychology-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "accountancy",
+    "lang": "en",
+    "title": "Accountancy: Partnership Firms & Companies (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-accountancy-en.pdf"
+  },
+  {
+    "class": "12",
+    "subject": "business-studies",
+    "lang": "en",
+    "title": "Business Studies I (Class 12)",
+    "pdf_url": "https://github.com/chirag127/oriz-ncert-app/releases/download/v1/12-business-studies-en.pdf"
+  }
 ]

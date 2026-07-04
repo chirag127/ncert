@@ -154,15 +154,7 @@
     "pageCount": 320,
     "fileSize": 6291456,
     "sha256": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
-    "tags": [
-      "physics",
-      "class-12",
-      "ncert",
-      "cbse",
-      "electricity",
-      "magnetism",
-      "waves"
-    ],
+    "tags": ["physics", "class-12", "ncert", "cbse", "electricity", "magnetism", "waves"],
     "keywords": [
       "physics",
       "class 12",
@@ -308,14 +300,7 @@
       }
     ],
     "pageCount": 260,
-    "tags": [
-      "biology",
-      "class-12",
-      "ncert",
-      "cbse",
-      "genetics",
-      "reproduction"
-    ],
+    "tags": ["biology", "class-12", "ncert", "cbse", "genetics", "reproduction"],
     "keywords": [
       "biology",
       "class 12",
@@ -404,15 +389,7 @@
       }
     ],
     "pageCount": 340,
-    "tags": [
-      "mathematics",
-      "class-10",
-      "ncert",
-      "cbse",
-      "algebra",
-      "geometry",
-      "trigonometry"
-    ],
+    "tags": ["mathematics", "class-10", "ncert", "cbse", "algebra", "geometry", "trigonometry"],
     "keywords": [
       "mathematics",
       "maths",
@@ -558,16 +535,7 @@
     ],
     "pageCount": 260,
     "tags": ["science", "class-9", "ncert", "cbse", "chemistry", "biology"],
-    "keywords": [
-      "science",
-      "class 9",
-      "ncert",
-      "matter",
-      "atoms",
-      "molecules",
-      "cell",
-      "tissues"
-    ],
+    "keywords": ["science", "class 9", "ncert", "matter", "atoms", "molecules", "cell", "tissues"],
     "description": "NCERT Science textbook for Class IX. Covers matter, atoms and molecules, the structure of the atom, the fundamental unit of life, and tissues. Published by the National Council of Educational Research and Training.",
     "ncertClassCode": 9,
     "ncertBookCode": 1,

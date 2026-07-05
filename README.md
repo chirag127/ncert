@@ -1,5 +1,7 @@
 # Oriz NCERT
 
+[![GitHub stars](https://img.shields.io/github/stars/chirag127/ncert-app?style=social)](https://github.com/chirag127/ncert-app/stargazers)
+
 > Free NCERT textbook directory — browse, search, and download every NCERT book by class, subject, and language.
 
 **Live at**: <https://books.oriz.in> · **Status**: production

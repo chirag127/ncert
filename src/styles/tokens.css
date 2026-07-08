@@ -1,91 +1,124 @@
 /*
- * tokens.css — v0 locked design palette per 2026-06-22 brief.
+ * tokens.css — MD3 dark-first theme (2026-07-08).
  *
- * Forces ONE parchment theme (no toggle). Overrides global.css's dark tokens
- * AND the @media (prefers-color-scheme) variants so the visual is identical
- * across OS theme preferences.
- *
- * Brief tokens:
- *   --color-bg       #F4EDE0  parchment
- *   --color-fg       #1A1A1A  ink
- *   --color-accent   #312E81  indigo
- *   --color-saffron  #F59E0B
- *   --color-muted    #525252
- *   --color-border   rgba(26,26,26,0.12)
- *
- * Existing legacy tokens (--paper, --card, --cinnabar, --indigo, --brass,
- * --graphite, --rule, --ink, --ink-mute) are re-mapped to the new palette so
- * Header/Footer/Sidebar/BottomBar styles keep working with zero per-file edits.
+ * Replaces the v0 parchment/light palette with Material Design 3 dark tokens.
+ * Legacy aliases (--paper, --ink, --cinnabar, --rule, etc.) are remapped so
+ * existing components keep working with zero per-component edits.
  */
+
+/* MD3 dark tokens */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap');
 
 :root,
 :root[data-theme],
 html {
-  color-scheme: light !important;
+  color-scheme: dark;
 
-  /* v0 locked palette */
-  --color-bg: #f4ede0;
-  --color-fg: #1a1a1a;
-  --color-accent: #312e81;
+  /* MD3 surface scale */
+  --md-surface: #0f0d13;
+  --md-surface-container-low: #1d1b20;
+  --md-surface-container: #211f26;
+  --md-surface-container-high: #2b2930;
+  --md-surface-container-highest: #36343b;
+
+  /* MD3 primary (purple) */
+  --md-primary: #d0bcff;
+  --md-on-primary: #381e72;
+  --md-primary-container: #4f378b;
+  --md-on-primary-container: #eaddff;
+
+  /* MD3 secondary */
+  --md-secondary: #ccc2dc;
+  --md-secondary-container: #4a4458;
+  --md-on-secondary-container: #e8def8;
+
+  /* MD3 outline */
+  --md-outline: #938f99;
+  --md-outline-variant: #49454f;
+
+  /* MD3 on-surface */
+  --md-on-surface: #e6e1e5;
+  --md-on-surface-variant: #cac4d0;
+
+  /* MD3 shape */
+  --md-shape-sm: 8px;
+  --md-shape-md: 12px;
+  --md-shape-lg: 16px;
+  --md-shape-xl: 28px;
+
+  /* MD3 type */
+  --md-font-display: "Google Sans Display", "Google Sans", Roboto, sans-serif;
+  --md-font-body: "Google Sans Text", "Google Sans", Roboto, sans-serif;
+  --md-font-mono: "Roboto Mono", monospace;
+
+  /* MD3 color palette vars for direct use */
+  --color-bg: var(--md-surface);
+  --color-fg: var(--md-on-surface);
+  --color-accent: var(--md-primary);
   --color-saffron: #f59e0b;
-  --color-muted: #525252;
-  --color-border: rgba(26, 26, 26, 0.12);
+  --color-muted: var(--md-on-surface-variant);
+  --color-border: var(--md-outline-variant);
 
   /* Type stack */
-  --font-display: 'Inter Tight', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Inter', 'Inter Variable', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-utility: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--md-font-display);
+  --font-body: var(--md-font-body);
+  --font-utility: var(--md-font-mono);
 
   /* Legacy alias remap — surface */
-  --paper: var(--color-bg);
-  --paper-deep: #ebe2d2;
-  --card: #faf6ec;
-  --card-shade: #ebe2d2;
-  --ink: var(--color-fg);
-  --ink-mute: var(--color-muted);
-  --rule: var(--color-border);
+  --paper: var(--md-surface);
+  --paper-deep: #07090c;
+  --card: var(--md-surface-container);
+  --card-shade: var(--md-surface-container-high);
+  --ink: var(--md-on-surface);
+  --ink-mute: var(--md-on-surface-variant);
+  --rule: var(--md-outline-variant);
 
   /* Legacy alias remap — accents */
-  --cinnabar: var(--color-accent); /* primary CTA = indigo, not red */
-  --indigo: var(--color-accent);
-  --brass: var(--color-saffron);
-  --graphite: var(--color-fg);
-  --graphite-soft: var(--color-muted);
+  --cinnabar: var(--md-primary);
+  --indigo: var(--md-primary-container);
+  --brass: #a89968;
+  --graphite: var(--md-on-surface);
+  --graphite-soft: var(--md-on-surface-variant);
 
   /* Card-on-card text */
-  --on-card: var(--color-fg);
-  --on-card-mute: var(--color-muted);
-  --on-card-rule: var(--color-border);
+  --on-card: var(--md-on-surface);
+  --on-card-mute: var(--md-on-surface-variant);
+  --on-card-rule: var(--md-outline-variant);
 
   /* Borrowed-selector aliases */
   --mustard: var(--color-saffron);
-  --vermilion: var(--color-accent);
+  --vermilion: var(--md-primary);
   --ledger: var(--color-saffron);
-  --highlighter: var(--color-saffron);
+  --highlighter: var(--md-primary);
 
   /* Font remap (legacy --font-sans/--font-mono) */
   --font-sans: var(--font-body);
   --font-mono: var(--font-utility);
 }
 
-/* Hard-override the @media (prefers-color-scheme) blocks from global.css. */
+/* Override global.css's @media color-scheme blocks — dark-first, always. */
 @media (prefers-color-scheme: dark),
        (prefers-color-scheme: light) {
   :root {
-    color-scheme: light;
-    --paper: var(--color-bg);
-    --card: #faf6ec;
-    --ink: var(--color-fg);
-    --ink-mute: var(--color-muted);
-    --rule: var(--color-border);
-    --cinnabar: var(--color-accent);
-    --indigo: var(--color-accent);
-    --brass: var(--color-saffron);
+    color-scheme: dark;
+    --paper: var(--md-surface);
+    --card: var(--md-surface-container);
+    --ink: var(--md-on-surface);
+    --ink-mute: var(--md-on-surface-variant);
+    --rule: var(--md-outline-variant);
+    --cinnabar: var(--md-primary);
+    --indigo: var(--md-primary-container);
+    --brass: #a89968;
   }
 }
 
 body {
-  background: var(--color-bg) !important;
-  color: var(--color-fg) !important;
-  font-family: var(--font-body) !important;
+  background: var(--md-surface) !important;
+  color: var(--md-on-surface-variant) !important;
+  font-family: var(--md-font-body) !important;
 }
+
+a { color: var(--md-primary); }
+h1, h2, h3, h4 { font-family: var(--md-font-display); color: var(--md-on-surface); }
+code, pre { font-family: var(--md-font-mono); }
+pre { background: var(--md-surface-container-high); padding: 16px; border-radius: 12px; }

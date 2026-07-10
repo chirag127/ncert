@@ -1,42 +1,42 @@
 /*
- * oriz-ui-overrides.css
+ * ui-overrides.css
  *
- * Paints the canonical `data-oriz-account-*` and `data-oriz-finish-sign-in-*`
+ * Paints the canonical `data-account-*` and `data-finish-sign-in-*`
  * selector hooks (emitted by AccountPanel.tsx + FinishSignIn.tsx) in this
  * site's catalogue-card palette. The shared auth-ui package emits these
  * hooks unstyled; each site supplies its own treatment here.
  *
- * Convention follows oriz-home's overrides file but swaps tokens to the
+ * Convention follows home's overrides file but swaps tokens to the
  * cinnabar/brass/Card-Bone palette. The auth panel renders ON the dark
  * Ink Block surface, so buttons read as Card-Bone-on-cinnabar.
  */
 
 /* ============= AccountPanel ============= */
-[data-oriz-account] {
+[data-account] {
   font-family: var(--font-sans);
   color: var(--ink);
   max-width: 520px;
 }
 
-[data-oriz-account-state="loading"] {
+[data-account-state="loading"] {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   color: var(--ink-mute);
 }
-[data-oriz-account-spinner] {
+[data-account-spinner] {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 1.125rem;
-  animation: oriz-spin 1.2s linear infinite;
+  animation: spin 1.2s linear infinite;
 }
-@keyframes oriz-spin {
+@keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-[data-oriz-account-heading] {
+[data-account-heading] {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 1.5rem;
@@ -44,15 +44,15 @@
   color: var(--ink);
 }
 
-[data-oriz-account-providers] {
+[data-account-providers] {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
   margin-bottom: 1rem;
 }
 
-[data-oriz-account] button[data-oriz-account-provider],
-[data-oriz-finish-sign-in] button[data-oriz-account-provider] {
+[data-account] button[data-account-provider],
+[data-finish-sign-in] button[data-account-provider] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -70,33 +70,33 @@
     border-color 120ms,
     color 120ms;
 }
-[data-oriz-account] button[data-oriz-account-provider]:hover:not(:disabled) {
+[data-account] button[data-account-provider]:hover:not(:disabled) {
   border-color: var(--cinnabar);
   color: var(--cinnabar);
 }
-[data-oriz-account] button[data-oriz-account-provider="google"]:hover,
-[data-oriz-account] button[data-oriz-account-provider="github"]:hover {
+[data-account] button[data-account-provider="google"]:hover,
+[data-account] button[data-account-provider="github"]:hover {
   border-color: var(--cinnabar);
 }
 
-[data-oriz-account] button[data-oriz-account-provider]:disabled,
-[data-oriz-finish-sign-in] button[data-oriz-account-provider]:disabled {
+[data-account] button[data-account-provider]:disabled,
+[data-finish-sign-in] button[data-account-provider]:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-[data-oriz-account] button[data-oriz-account-action="sign-out"] {
+[data-account] button[data-account-action="sign-out"] {
   background: var(--cinnabar);
   border-color: var(--cinnabar);
   color: #f4ede0;
 }
-[data-oriz-account] button[data-oriz-account-action="sign-out"]:hover:not(:disabled) {
+[data-account] button[data-account-action="sign-out"]:hover:not(:disabled) {
   background: color-mix(in oklab, var(--cinnabar) 88%, black);
   border-color: color-mix(in oklab, var(--cinnabar) 88%, black);
   color: #f4ede0;
 }
 
-[data-oriz-account-separator] {
+[data-account-separator] {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -112,21 +112,21 @@
     "ss20" 1,
     "calt" 0;
 }
-[data-oriz-account-separator]::before,
-[data-oriz-account-separator]::after {
+[data-account-separator]::before,
+[data-account-separator]::after {
   content: "";
   flex: 1;
   height: 1px;
   background: var(--rule);
 }
 
-[data-oriz-account-email-form] {
+[data-account-email-form] {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-[data-oriz-account-email-form] input,
-[data-oriz-finish-sign-in] input {
+[data-account-email-form] input,
+[data-finish-sign-in] input {
   height: 44px;
   padding-inline: 0.875rem;
   background: var(--paper-deep);
@@ -136,51 +136,51 @@
   font-size: 0.9375rem;
   border-radius: 0;
 }
-[data-oriz-account-email-form] input:focus,
-[data-oriz-finish-sign-in] input:focus {
+[data-account-email-form] input:focus,
+[data-finish-sign-in] input:focus {
   outline: none;
   border-color: var(--cinnabar);
 }
 
-[data-oriz-account-link-sent],
-[data-oriz-account-note] {
+[data-account-link-sent],
+[data-account-note] {
   margin: 0.75rem 0 0;
   color: var(--ink-mute);
   font-size: 0.875rem;
   line-height: 1.55;
 }
-[data-oriz-account-error] {
+[data-account-error] {
   margin: 0.75rem 0 0;
   color: var(--cinnabar);
   font-size: 0.875rem;
 }
 
 /* signed-in card */
-[data-oriz-account-state="signed-in"] {
+[data-account-state="signed-in"] {
   border: 1px solid var(--rule);
   padding: 1.5rem;
 }
-[data-oriz-account-me] {
+[data-account-me] {
   display: flex;
   gap: 0.875rem;
   align-items: center;
   margin-bottom: 1rem;
 }
-[data-oriz-account-avatar] {
+[data-account-avatar] {
   width: 48px;
   height: 48px;
   border-radius: 0;
   border: 1px solid var(--brass);
   object-fit: cover;
 }
-[data-oriz-account-name] {
+[data-account-name] {
   margin: 0;
   font-family: var(--font-display);
   font-size: 1.0625rem;
   font-weight: 500;
   color: var(--ink);
 }
-[data-oriz-account-email] {
+[data-account-email] {
   margin: 0.125rem 0 0;
   color: var(--ink-mute);
   font-family: var(--font-mono);
@@ -193,7 +193,7 @@
 }
 
 /* ============= FinishSignIn ============= */
-[data-oriz-finish-sign-in] {
+[data-finish-sign-in] {
   font-family: var(--font-sans);
   color: var(--ink);
   max-width: 480px;
@@ -201,14 +201,14 @@
   text-align: center;
   padding: 2rem 0;
 }
-[data-oriz-finish-sign-in] p {
+[data-finish-sign-in] p {
   margin: 0 0 1rem;
   color: var(--ink-mute);
 }
-[data-oriz-finish-sign-in-error] {
+[data-finish-sign-in-error] {
   color: var(--cinnabar);
 }
-[data-oriz-finish-sign-in] form {
+[data-finish-sign-in] form {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
@@ -216,12 +216,12 @@
 }
 
 /* ============= ContactForm (canonical hooks) ============= */
-[data-oriz-contact] {
+[data-contact] {
   font-family: var(--font-sans);
   color: var(--ink);
   max-width: 560px;
 }
-[data-oriz-contact] label {
+[data-contact] label {
   display: block;
   font-family: var(--font-mono);
   font-size: 11px;
@@ -235,8 +235,8 @@
     "ss20" 1,
     "calt" 0;
 }
-[data-oriz-contact] input,
-[data-oriz-contact] textarea {
+[data-contact] input,
+[data-contact] textarea {
   width: 100%;
   background: var(--paper-deep);
   border: 1px solid var(--rule);
@@ -246,12 +246,12 @@
   padding: 0.625rem 0.875rem;
   border-radius: 0;
 }
-[data-oriz-contact] input:focus,
-[data-oriz-contact] textarea:focus {
+[data-contact] input:focus,
+[data-contact] textarea:focus {
   outline: none;
   border-color: var(--cinnabar);
 }
-[data-oriz-contact] button[type="submit"] {
+[data-contact] button[type="submit"] {
   margin-top: 1rem;
   height: 44px;
   padding-inline: 1.5rem;
@@ -264,10 +264,10 @@
   cursor: pointer;
   border-radius: 0;
 }
-[data-oriz-contact] button[type="submit"]:hover:not(:disabled) {
+[data-contact] button[type="submit"]:hover:not(:disabled) {
   background: color-mix(in oklab, var(--cinnabar) 88%, black);
 }
-[data-oriz-contact-status] {
+[data-contact-status] {
   margin-top: 0.75rem;
   font-size: 0.875rem;
   color: var(--ink-mute);

@@ -1,5 +1,4 @@
 ---
-import { signInUrl } from '@chirag127/astro-shell/auth-gate'
 /*
  * Header — newsprint strip on Ink Block, 56px tall.
  *
@@ -10,8 +9,8 @@ import { signInUrl } from '@chirag127/astro-shell/auth-gate'
  *   Center:  persistent search input, max 480px, Card-Bone fill, Graphite text,
  *            1px brass border. Placeholder cycles every 4 seconds between
  *            English and Hindi prompts. Cycle pauses on focus.
- *   Right:   Account chip (sign in / avatar) + filter-toggle hamburger that
- *            controls the home page filter rail on small screens.
+ *   Right:   filter-toggle hamburger that controls the home page filter rail
+ *            on small screens.
  *
  * Inline scripts handle the placeholder cycle and the filter-toggle so the
  * chrome ships zero React.
@@ -40,10 +39,6 @@ import Wordmark from './Wordmark.astro'
     </form>
 
     <div class="header-right">
-      <a href={signInUrl()} class="header-chip" aria-label="Sign in or account">
-        <span class="chip-dot" aria-hidden="true"></span>
-        <span class="chip-label mono">SIGN IN</span>
-      </a>
       <button
         type="button"
         class="header-toggle"

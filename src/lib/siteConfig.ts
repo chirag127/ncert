@@ -1,6 +1,12 @@
-import type { OrizSiteConfig } from '@chirag127/astro-shell/types'
+interface SiteConfig {
+  slug: string
+  name: string
+  origin: string
+  tagline: string
+  description?: string
+}
 
-export const SITE_CONFIG: OrizSiteConfig = {
+export const SITE_CONFIG: SiteConfig = {
   slug: 'ncert',
   name: 'NCERT',
   origin: 'https://ncert.oriz.in',

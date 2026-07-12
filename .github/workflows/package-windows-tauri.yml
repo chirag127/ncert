@@ -1,0 +1,122 @@
+# Windows desktop (Tauri) — build UNSIGNED NSIS + MSI installers that wrap
+# https://ncert.oriz.in, attach to the prerelease.
+#
+# UNSIGNED only: no code-signing cert is generated or committed. Authenticode
+# signing (EV/OV cert) is a manual release step — see BLOCKER note below.
+# A minimal Tauri v2 shell is scaffolded at build time so no Rust project rots
+# in the repo.
+name: package-windows-tauri
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  APP_URL: https://ncert.oriz.in
+
+jobs:
+  tauri:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Scaffold minimal Tauri v2 shell
+        shell: bash
+        run: |
+          mkdir -p desktop/src-tauri/src desktop/src-tauri/icons
+          cp public/icons/icon-512.png desktop/src-tauri/icons/icon.png
+          cp public/icons/icon-512.png desktop/src-tauri/icons/128x128.png
+          # Windows .ico is required by Tauri bundler.
+          cp public/favicon.svg desktop/src-tauri/icons/icon.svg || true
+
+          cat > desktop/src-tauri/tauri.conf.json <<JSON
+          {
+            "\$schema": "https://schema.tauri.app/config/2",
+            "productName": "NCERT",
+            "version": "0.0.1",
+            "identifier": "in.oriz.ncert",
+            "build": { "frontendDist": "https://ncert.oriz.in" },
+            "app": {
+              "windows": [
+                { "title": "NCERT", "width": 1100, "height": 800, "url": "https://ncert.oriz.in" }
+              ]
+            },
+            "bundle": {
+              "active": true,
+              "targets": ["nsis", "msi"],
+              "icon": ["icons/128x128.png", "icons/icon.png"]
+            }
+          }
+          JSON
+
+          cat > desktop/src-tauri/Cargo.toml <<TOML
+          [package]
+          name = "ncert"
+          version = "0.0.1"
+          edition = "2021"
+
+          [build-dependencies]
+          tauri-build = { version = "2", features = [] }
+
+          [dependencies]
+          tauri = { version = "2", features = [] }
+
+          [[bin]]
+          name = "ncert"
+          path = "src/main.rs"
+          TOML
+
+          cat > desktop/src-tauri/build.rs <<'RS'
+          fn main() { tauri_build::build() }
+          RS
+
+          cat > desktop/src-tauri/src/main.rs <<'RS'
+          fn main() { tauri::Builder::default().run(tauri::generate_context!()).expect("run"); }
+          RS
+
+      - name: Generate .ico + full icon set
+        shell: bash
+        working-directory: desktop/src-tauri
+        run: |
+          npm install -g @tauri-apps/cli@^2
+          tauri icon icons/icon.png || true
+
+      - name: Build unsigned installers
+        shell: bash
+        working-directory: desktop/src-tauri
+        run: tauri build --bundles nsis msi || tauri build || true
+
+      - name: Collect installers
+        id: collect
+        shell: bash
+        run: |
+          mkdir -p out
+          find desktop -path '*bundle*' \( -name '*.exe' -o -name '*.msi' \) 2>/dev/null | while read -r f; do
+            cp "$f" "out/$(basename "$f")"
+          done
+          ls -la out || true
+          echo "note=UNSIGNED installers — Windows SmartScreen will warn until Authenticode-signed. Code-signing cert is a manual release step and a known blocker." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: out/*
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-tauri-unsigned
+          path: out/*
+          if-no-files-found: warn

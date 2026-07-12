@@ -1,0 +1,67 @@
+---
+/*
+ * LegalFooter — bottom legal strip (inlined, was
+ * @chirag127/astro-chrome/legal/LegalFooter.astro). Copyright line + the
+ * India IT-Rules-2021 mandatory legal links.
+ */
+interface Props {
+  appName: string
+  bio?: string
+}
+const { appName, bio } = Astro.props
+const year = new Date().getFullYear()
+const links = [
+  { href: '/about/', label: 'About' },
+  { href: '/legal/privacy/', label: 'Privacy' },
+  { href: '/legal/terms/', label: 'Terms' },
+  { href: '/legal/disclaimer/', label: 'Disclaimer' },
+  { href: '/legal/cookies/', label: 'Cookies' },
+  { href: '/legal/grievance/', label: 'Grievance officer' },
+  { href: '/contact/', label: 'Contact' },
+]
+---
+<div class="legal-footer">
+  <div class="lf-inner">
+    {bio && <p class="lf-bio">{bio}</p>}
+    <ul class="lf-links">
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+    <p class="lf-copy">© {year} {appName}. Built by Chirag Singhal.</p>
+  </div>
+</div>
+<style>
+  .legal-footer { border-top: 1px solid var(--rule); }
+  .lf-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lf-bio { margin: 0; color: var(--ink-mute); font-size: 13px; line-height: 1.55; max-width: 60ch; }
+  .lf-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+  }
+  .lf-links a {
+    color: var(--ink-mute);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .lf-links a:hover { color: var(--cinnabar); }
+  .lf-copy {
+    margin: 0;
+    color: var(--ink-mute);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+</style>

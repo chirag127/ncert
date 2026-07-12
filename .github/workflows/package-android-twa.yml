@@ -1,0 +1,71 @@
+# Android TWA (Trusted Web Activity) — build an UNSIGNED APK/AAB that wraps
+# https://ncert.oriz.in via Bubblewrap, attach to the prerelease.
+#
+# UNSIGNED only: no keystore is generated or committed. Signing (upload key,
+# Play App Signing) is a manual release step — see BLOCKER note in job summary.
+name: package-android-twa
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  twa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Bubblewrap
+        run: npm install -g @bubblewrap/cli
+
+      - name: Init TWA from live manifest
+        run: |
+          mkdir -p twa && cd twa
+          bubblewrap init \
+            --manifest="https://ncert.oriz.in/manifest.webmanifest" \
+            --directory=. <<'EOF'
+          EOF
+        continue-on-error: true
+
+      - name: Build unsigned APK/AAB
+        working-directory: twa
+        run: bubblewrap build --skipSigning || true
+
+      - name: Collect artifacts
+        id: collect
+        run: |
+          mkdir -p out
+          find twa -name '*.apk' -o -name '*.aab' 2>/dev/null | while read -r f; do
+            cp "$f" "out/$(basename "$f")"
+          done
+          ls -la out || true
+          echo "note=UNSIGNED build — install requires a signing key (Play App Signing / upload keystore). Signing is a manual release step and a known blocker." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: out/*
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-twa-unsigned
+          path: out/*
+          if-no-files-found: warn

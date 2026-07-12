@@ -4,18 +4,16 @@ import BaseLayout from '~/layouts/BaseLayout.astro'
 /*
  * Contact — restyled for v2.
  *
- * Drops the @chirag127/ui ContactForm (which carried v1 token coupling).
- * The form posts directly to Web3Forms via plain HTML — no React island
- * needed for a simple form. We render a small client-side handler inline
- * to give the user feedback after submission, and emit `data-chirag127ntact-*`
- * hooks so the styles in ui-overrides.css apply.
+ * Drops the ContactForm island (v1 token coupling). The form posts directly
+ * to Web3Forms via plain HTML — no React island needed for a simple form.
+ * Emits `data-contact-*` hooks so the styles in ui-overrides.css apply.
  */
 const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? ''
 ---
 
 <BaseLayout
-  title="Contact — Books"
-  description="Get in touch about the chirag127 Books library."
+  title="Contact — NCERT"
+  description="Get in touch about the NCERT textbook directory."
 >
   <div class="spine-prose">
     <header class="page-head">
@@ -32,17 +30,17 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? ''
         Email is fastest:
         <a href="mailto:whyiswhen@gmail.com"><strong>whyiswhen@gmail.com</strong></a>.
         Or use the form below — it posts to Web3Forms, which forwards the
-        message to my inbox. We don't store anything on books.chirag127.dev.
+        message to my inbox. We don't store anything on ncert.oriz.in.
       </p>
 
       <form
-        data-chirag127ntact
+        data-contact
         action="https://api.web3forms.com/submit"
         method="POST"
       >
         <input type="hidden" name="access_key" value={web3formsKey} />
-        <input type="hidden" name="from_name" value="books.chirag127.dev" />
-        <input type="hidden" name="subject" value="books.chirag127.dev contact form" />
+        <input type="hidden" name="from_name" value="ncert.oriz.in" />
+        <input type="hidden" name="subject" value="ncert.oriz.in contact form" />
         <input type="checkbox" name="botcheck" style="display: none;" tabindex="-1" autocomplete="off" />
 
         <label for="cf-name">Name</label>
@@ -56,7 +54,7 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? ''
 
         <button type="submit">Send</button>
 
-        <p data-chirag127ntact-status aria-live="polite"></p>
+        <p data-contact-status aria-live="polite"></p>
       </form>
 
       <p class="meta-foot">

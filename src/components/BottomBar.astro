@@ -1,0 +1,66 @@
+---
+/*
+ * BottomBar — mobile bottom nav (inlined, was @chirag127/astro-chrome).
+ * Fixed on ≤767px only. `href: '#sb-toggle'` opens the Sidebar drawer via a
+ * `<label>` for the `#sb-toggle` checkbox.
+ */
+export interface BottomBarAction {
+  icon: string
+  label: string
+  href: string
+}
+interface Props {
+  actions: BottomBarAction[]
+}
+const { actions } = Astro.props
+---
+<nav class="bottombar" aria-label="Primary">
+  {actions.map((a) =>
+    a.href === '#sb-toggle' ? (
+      <label class="bb-item" for="sb-toggle" role="button" tabindex="0">
+        <span class="bb-icon" aria-hidden="true">{a.icon}</span>
+        <span class="bb-label">{a.label}</span>
+      </label>
+    ) : (
+      <a class="bb-item" href={a.href}>
+        <span class="bb-icon" aria-hidden="true">{a.icon}</span>
+        <span class="bb-label">{a.label}</span>
+      </a>
+    ),
+  )}
+</nav>
+<style>
+  .bottombar { display: none; }
+  @media (max-width: 767px) {
+    .bottombar {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 50;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      height: 64px;
+      background: var(--paper);
+      border-top: 1px solid var(--rule);
+    }
+    .bb-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: var(--ink-mute);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .bb-item:hover,
+    .bb-item:focus-visible { color: var(--cinnabar); }
+    .bb-icon { font-size: 18px; line-height: 1; }
+    .bb-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  }
+</style>

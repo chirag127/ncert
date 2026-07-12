@@ -5,25 +5,23 @@
  * Chrome composition (per locked policy):
  *   - Header:    LOCAL (~/components/Header.astro) — fully divergent per-app
  *                with class/subject filter toggle for the home filter rail.
- *   - Sidebar:   @chirag127/astro-chrome/Sidebar.astro — shared drawer shell,
+ *   - Sidebar:   LOCAL (~/components/Sidebar.astro) — CSS-only drawer shell,
  *                per-app slot content (AppSidebarContent → class/subject nav).
- *   - Footer:    @chirag127/astro-chrome/Footer.astro — shared mega-sitemap.
- *   - BottomBar: @chirag127/astro-chrome/BottomBar.astro — shared structure,
- *                per-app icons (Home/Classes/Search/Downloads/Menu).
+ *   - Footer:    LOCAL (~/components/Footer.astro) — mega-sitemap + LegalFooter.
+ *   - BottomBar: LOCAL (~/components/BottomBar.astro) — mobile nav
+ *                (Home/Classes/Search/Downloads/Menu).
  */
 import '~/styles/global.css'
 import '~/styles/ui-overrides.css'
-import '@chirag127/astro-shell/tokens.css'
 import '~/styles/tokens.css'
 import '@fontsource-variable/inter-tight'
 import '@fontsource-variable/inter'
 import '@fontsource/ibm-plex-mono'
-import BottomBar from '@chirag127/astro-chrome/BottomBar.astro'
-import Sidebar from '@chirag127/astro-chrome/Sidebar.astro'
-import FamilyChrome from '@chirag127/astro-shell/components/FamilyChrome.astro'
 import AppSidebarContent from '~/components/AppSidebarContent.astro'
+import BottomBar from '~/components/BottomBar.astro'
 import Footer from '~/components/Footer.astro'
 import Header from '~/components/Header.astro'
+import Sidebar from '~/components/Sidebar.astro'
 import { bottomBarActions } from '~/data/bottombar-actions'
 import { SITE_CONFIG } from '~/lib/siteConfig'
 
@@ -68,6 +66,9 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
     <meta name="twitter:site" content="@chirag127" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0f0d13" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -96,18 +97,8 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
         />
       )
     }
-
-    {import.meta.env.PUBLIC_ADSENSE_CLIENT && (
-      <script
-        is:inline
-        async
-        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.PUBLIC_ADSENSE_CLIENT}`}
-        crossorigin="anonymous"
-      />
-    )}
   </head>
   <body>
-    <FamilyChrome slug="oriz-ncert-app" title="NCERT" accent="#c08a26" />
     <a href="#main" class="skip-link">Skip to content</a>
     {hideHeader ? (
       <main id="main"><slot /></main>
@@ -132,5 +123,12 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
         .layout-main { padding-bottom: 64px; }
       }
     </style>
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {})
+        })
+      }
+    </script>
   </body>
 </html>

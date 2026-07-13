@@ -1,5 +1,5 @@
 # Android TWA (Trusted Web Activity) — build an UNSIGNED APK/AAB that wraps
-# https://ncert.oriz.in via Bubblewrap, attach to the prerelease.
+# https://oriz-ncert.pages.dev via Bubblewrap, attach to the prerelease.
 #
 # UNSIGNED only: no keystore is generated or committed. Signing (upload key,
 # Play App Signing) is a manual release step — see BLOCKER note in job summary.
@@ -37,7 +37,7 @@ jobs:
         run: |
           mkdir -p twa && cd twa
           bubblewrap init \
-            --manifest="https://ncert.oriz.in/manifest.webmanifest" \
+            --manifest="https://oriz-ncert.pages.dev/manifest.webmanifest" \
             --directory=. <<'EOF'
           EOF
         continue-on-error: true

@@ -1,5 +1,5 @@
 # Windows desktop (Tauri) — build UNSIGNED NSIS + MSI installers that wrap
-# https://ncert.oriz.in, attach to the prerelease.
+# https://oriz-ncert.pages.dev, attach to the prerelease.
 #
 # UNSIGNED only: no code-signing cert is generated or committed. Authenticode
 # signing (EV/OV cert) is a manual release step — see BLOCKER note below.
@@ -16,7 +16,7 @@ permissions:
   contents: write
 
 env:
-  APP_URL: https://ncert.oriz.in
+  APP_URL: https://oriz-ncert.pages.dev
 
 jobs:
   tauri:
@@ -45,10 +45,10 @@ jobs:
             "productName": "NCERT",
             "version": "0.0.1",
             "identifier": "in.oriz.ncert",
-            "build": { "frontendDist": "https://ncert.oriz.in" },
+            "build": { "frontendDist": "https://oriz-ncert.pages.dev" },
             "app": {
               "windows": [
-                { "title": "NCERT", "width": 1100, "height": 800, "url": "https://ncert.oriz.in" }
+                { "title": "NCERT", "width": 1100, "height": 800, "url": "https://oriz-ncert.pages.dev" }
               ]
             },
             "bundle": {

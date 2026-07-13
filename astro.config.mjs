@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 import AstroPWA from '@vite-pwa/astro'
 import { defineConfig } from 'astro/config'
 
-const site = 'https://ncert.oriz.in'
+const site = 'https://oriz-ncert.pages.dev'
 
 export default defineConfig({
   site,

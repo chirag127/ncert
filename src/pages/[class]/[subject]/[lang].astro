@@ -2,8 +2,8 @@
 /*
  * /[class]/[subject]/[lang].astro — book download page.
  *
- * Shows title + metadata + a big "Download PDF" button linking to the
- * GitHub Releases artefact (PDFs are NOT hosted on CF Pages).
+ * Shows title + metadata + a big "Download ZIP" button linking to the
+ * official NCERT textbook ZIP (hosted at ncert.nic.in).
  */
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import type { NcertEntry } from '~/lib/catalog'
@@ -52,12 +52,12 @@ const jsonLd = {
     </header>
 
     <section class="cta">
-      <a class="dl-btn" href={book.pdf_url} download>
-        Download PDF
+      <a class="dl-btn" href={book.pdf_url} target="_blank" rel="noopener noreferrer">
+        Download ZIP
       </a>
       <p class="cta-note mono">
-        Served from GitHub Releases. PDFs are merged from ncert.nic.in
-        chapter PDFs via qpdf.
+        Served directly from ncert.nic.in. Contains all chapter PDFs
+        for this book.
       </p>
     </section>
   </div>

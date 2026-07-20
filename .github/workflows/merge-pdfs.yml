@@ -2,34 +2,182 @@ name: Merge NCERT PDFs
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 4 1 * *'  # 1st of every month at 04:00 UTC
+    - cron: '0 4 1 * *'
 
 permissions:
   contents: write
+
+env:
+  RELEASE_TAG: ncert-pdfs
+  NCERT_BASE: https://ncert.nic.in/textbook/pdf
 
 jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
+
       - name: Install qpdf
         run: sudo apt-get update && sudo apt-get install -y qpdf
-      - name: Stub merge pipeline
+
+      - name: Build book code map
+        id: map
+        run: cat <<'MAPJSON' > /tmp/book_codes.json
+        {
+          "pre-primary|rimjhim|hi": null,
+          "1|english|en": "aemr1",
+          "1|hindi|hi": "ahsr1",
+          "1|math|en": "aejm1",
+          "1|math|hi": "ahjm1",
+          "2|english|en": "bemr1",
+          "2|hindi|hi": "bhsr1",
+          "2|math|en": "bejm1",
+          "3|english|en": "ceen1",
+          "3|math|en": "cemh1",
+          "3|evs|en": "ceap1",
+          "4|english|en": "deen1",
+          "4|math|en": "demh1",
+          "4|evs|en": "deap1",
+          "5|english|en": "eeen1",
+          "5|math|en": "eemh1",
+          "5|evs|en": "eeap1",
+          "6|english|en": "fehl1",
+          "6|hindi|hi": "fhvs1",
+          "6|math|en": "femh1",
+          "6|math|hi": "fhmh1",
+          "6|science|en": "fesc1",
+          "6|social-science|en": "fess1",
+          "7|english|en": "gehc1",
+          "7|hindi|hi": "ghvs1",
+          "7|math|en": "gemh1",
+          "7|science|en": "gesc1",
+          "7|social-science|en": "gess1",
+          "8|english|en": "hehd1",
+          "8|hindi|hi": "hhvs1",
+          "8|math|en": "hemh1",
+          "8|science|en": "hesc1",
+          "8|social-science|en": "hess2",
+          "9|english|en": "iebe1",
+          "9|hindi|hi": "ihks1",
+          "9|math|en": "iemh1",
+          "9|science|en": "iesc1",
+          "9|social-science|en": "iess1",
+          "10|english|en": "jeff1",
+          "10|hindi|hi": "jhks1",
+          "10|math|en": "jemh1",
+          "10|science|en": "jesc1",
+          "10|social-science|en": "jess1",
+          "11|english|en": "kehb1",
+          "11|math|en": "kemh1",
+          "11|physics|en": "keph1",
+          "11|chemistry|en": "kech1",
+          "11|biology|en": "kebo1",
+          "11|history|en": "kehs1",
+          "11|geography|en": "kegy2",
+          "11|economics|en": "keec1",
+          "11|political-science|en": "keps2",
+          "11|accountancy|en": "keac1",
+          "11|business-studies|en": "kebs1",
+          "12|english|en": "lefl1",
+          "12|math|en": "lemh1",
+          "12|physics|en": "leph1",
+          "12|chemistry|en": "lech1",
+          "12|biology|en": "lebo1",
+          "12|history|en": "lehs1",
+          "12|geography|en": "legy1",
+          "12|economics|en": "leec1",
+          "12|political-science|en": "leps1",
+          "12|sociology|en": "lesy1",
+          "12|psychology|en": "lepy1",
+          "12|accountancy|en": "leac1",
+          "12|business-studies|en": "lebs1"
+        }
+        MAPJSON
+        echo "Book code map written"
+
+      - name: Download and merge PDFs
         run: |
           mkdir -p out
-          echo "TODO: implement real merge pipeline.
+          mapfile -t keys < <(jq -r 'keys[]' /tmp/book_codes.json)
+          success=0
+          fail=0
 
-          The real job will:
-            1. Read data/books.json
-            2. For each entry, fetch every chapter PDF from ncert.nic.in
-            3. Run: qpdf --empty --pages chapter*.pdf -- {class}-{subject}-{lang}.pdf
-            4. Upload all PDFs as a GitHub Release.
-          " > out/README.txt
-      - uses: softprops/action-gh-release@v2
+          for key in "${keys[@]}"; do
+            code=$(jq -r --arg k "$key" '.[$k]' /tmp/book_codes.json)
+            if [ "$code" = "null" ] || [ -z "$code" ]; then
+              echo "SKIP (no NCERT code): $key"
+              continue
+            fi
+
+            class=$(echo "$key" | cut -d'|' -f1)
+            subject=$(echo "$key" | cut -d'|' -f2)
+            lang=$(echo "$key" | cut -d'|' -f3)
+            outfile="out/${class}-${subject}-${lang}.pdf"
+            tmpdir=$(mktemp -d)
+
+            echo "Processing: $key ($code) → $outfile"
+
+            # Download ZIP
+            zipurl="${NCERT_BASE}/${code}dd.zip"
+            if ! curl -fsSL -o "$tmpdir/book.zip" "$zipurl" 2>/dev/null; then
+              echo "  FAIL: could not download $zipurl"
+              fail=$((fail + 1))
+              rm -rf "$tmpdir"
+              continue
+            fi
+
+            # Extract chapter PDFs
+            if ! unzip -q -o "$tmpdir/book.zip" -d "$tmpdir/chapters" 2>/dev/null; then
+              echo "  FAIL: could not extract ZIP for $key"
+              fail=$((fail + 1))
+              rm -rf "$tmpdir"
+              continue
+            fi
+
+            # Find chapter PDFs sorted by name
+            chapters=($(find "$tmpdir/chapters" -name '*.pdf' -type f | sort))
+            if [ ${#chapters[@]} -eq 0 ]; then
+              echo "  FAIL: no PDFs found in ZIP for $key"
+              fail=$((fail + 1))
+              rm -rf "$tmpdir"
+              continue
+            fi
+
+            echo "  Found ${#chapters[@]} chapters"
+
+            # Merge with qpdf
+            qpdf --empty --pages "${chapters[@]}" -- "$outfile" 2>/dev/null
+            if [ $? -eq 0 ] && [ -f "$outfile" ]; then
+              size=$(du -h "$outfile" | cut -f1)
+              echo "  OK: $outfile ($size)"
+              success=$((success + 1))
+            else
+              echo "  FAIL: qpdf merge failed for $key"
+              fail=$((fail + 1))
+            fi
+
+            rm -rf "$tmpdir"
+          done
+
+          echo ""
+          echo "Done. Success: $success, Failed: $fail"
+          ls -lh out/
+
+      - name: Delete old release
+        continue-on-error: true
+        run: gh release delete "$RELEASE_TAG" --yes --cleanup-tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create release and upload PDFs
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0-stub
-          name: 'NCERT merged PDFs (stub)'
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: "NCERT merged PDFs"
+          body: |
+            Auto-generated merged PDFs from NCERT chapter sources.
+            Updated monthly via GitHub Actions.
+          prerelease: false
           files: out/*
-          fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

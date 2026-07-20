@@ -60,7 +60,14 @@
     "pageCount": 280,
     "fileSize": 5242880,
     "sha256": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
-    "tags": ["mathematics", "class-12", "ncert", "cbse", "calculus", "algebra"],
+    "tags": [
+      "mathematics",
+      "class-12",
+      "ncert",
+      "cbse",
+      "calculus",
+      "algebra"
+    ],
     "keywords": [
       "mathematics",
       "maths",
@@ -77,7 +84,7 @@
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/lemh1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/12-mathematics-english.pdf"
   },
   {
     "bookCode": "leph1",
@@ -154,7 +161,15 @@
     "pageCount": 320,
     "fileSize": 6291456,
     "sha256": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
-    "tags": ["physics", "class-12", "ncert", "cbse", "electricity", "magnetism", "waves"],
+    "tags": [
+      "physics",
+      "class-12",
+      "ncert",
+      "cbse",
+      "electricity",
+      "magnetism",
+      "waves"
+    ],
     "keywords": [
       "physics",
       "class 12",
@@ -171,7 +186,7 @@
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/leph1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/12-physics-english.pdf"
   },
   {
     "bookCode": "lech1",
@@ -224,7 +239,13 @@
       }
     ],
     "pageCount": 240,
-    "tags": ["chemistry", "class-12", "ncert", "cbse", "physical-chemistry"],
+    "tags": [
+      "chemistry",
+      "class-12",
+      "ncert",
+      "cbse",
+      "physical-chemistry"
+    ],
     "keywords": [
       "chemistry",
       "class 12",
@@ -240,7 +261,7 @@
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/lech1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/12-chemistry-english.pdf"
   },
   {
     "bookCode": "lebo1",
@@ -300,7 +321,14 @@
       }
     ],
     "pageCount": 260,
-    "tags": ["biology", "class-12", "ncert", "cbse", "genetics", "reproduction"],
+    "tags": [
+      "biology",
+      "class-12",
+      "ncert",
+      "cbse",
+      "genetics",
+      "reproduction"
+    ],
     "keywords": [
       "biology",
       "class 12",
@@ -315,7 +343,7 @@
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/lebo1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/12-biology-english.pdf"
   },
   {
     "bookCode": "jemh1",
@@ -389,7 +417,15 @@
       }
     ],
     "pageCount": 340,
-    "tags": ["mathematics", "class-10", "ncert", "cbse", "algebra", "geometry", "trigonometry"],
+    "tags": [
+      "mathematics",
+      "class-10",
+      "ncert",
+      "cbse",
+      "algebra",
+      "geometry",
+      "trigonometry"
+    ],
     "keywords": [
       "mathematics",
       "maths",
@@ -406,7 +442,7 @@
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/jemh1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/10-mathematics-english.pdf"
   },
   {
     "bookCode": "jesc1",
@@ -459,7 +495,14 @@
       }
     ],
     "pageCount": 280,
-    "tags": ["science", "class-10", "ncert", "cbse", "chemistry", "biology"],
+    "tags": [
+      "science",
+      "class-10",
+      "ncert",
+      "cbse",
+      "chemistry",
+      "biology"
+    ],
     "keywords": [
       "science",
       "class 10",
@@ -474,7 +517,7 @@
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/jesc1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/10-science-english.pdf"
   },
   {
     "bookCode": "iesc1",
@@ -534,14 +577,30 @@
       }
     ],
     "pageCount": 260,
-    "tags": ["science", "class-9", "ncert", "cbse", "chemistry", "biology"],
-    "keywords": ["science", "class 9", "ncert", "matter", "atoms", "molecules", "cell", "tissues"],
+    "tags": [
+      "science",
+      "class-9",
+      "ncert",
+      "cbse",
+      "chemistry",
+      "biology"
+    ],
+    "keywords": [
+      "science",
+      "class 9",
+      "ncert",
+      "matter",
+      "atoms",
+      "molecules",
+      "cell",
+      "tissues"
+    ],
     "description": "NCERT Science textbook for Class IX. Covers matter, atoms and molecules, the structure of the atom, the fundamental unit of life, and tissues. Published by the National Council of Educational Research and Training.",
     "ncertClassCode": 9,
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/iesc1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/9-science-english.pdf"
   },
   {
     "bookCode": "iemh1",
@@ -601,7 +660,14 @@
       }
     ],
     "pageCount": 300,
-    "tags": ["mathematics", "class-9", "ncert", "cbse", "algebra", "geometry"],
+    "tags": [
+      "mathematics",
+      "class-9",
+      "ncert",
+      "cbse",
+      "algebra",
+      "geometry"
+    ],
     "keywords": [
       "mathematics",
       "maths",
@@ -618,6 +684,6 @@
     "ncertBookCode": 1,
     "lastUpdated": "2024-04-01T00:00:00Z",
     "isRationalised": false,
-    "downloadUrl": "https://ncert.nic.in/textbook/pdf/iemh1dd.zip"
+    "downloadUrl": "https://github.com/chirag127/ncert/releases/download/ncert-pdfs/9-mathematics-english.pdf"
   }
 ]

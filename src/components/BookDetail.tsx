@@ -55,7 +55,7 @@ function formatBytes(n?: number): string | null {
 export default function BookDetail({ book }: Props) {
   const cls = classDisplay(book.class)
   const subj = subjectDisplay(book.subject)
-  const mergedBookUrl = book.downloadUrl ?? `${NCERT_BASE}/textbook/pdf/${book.bookCode}dd.zip`
+  const mergedBookUrl = book.downloadUrl ?? `${NCERT_BASE}/textbook/pdf/${book.bookCode}.pdf`
   const safeTitle = book.title.replace(/[^a-z0-9]/gi, '_')
   const sizeLabel = formatBytes((book as BookMetadata & { fileSize?: number }).fileSize)
   const cover = (book as BookMetadata & { coverImage?: string }).coverImage
@@ -82,13 +82,13 @@ export default function BookDetail({ book }: Props) {
 
           <a
             href={mergedBookUrl}
-            download={`${book.bookCode}-${safeTitle}.zip`}
+            download={`${book.bookCode}-${safeTitle}.pdf`}
             target="_blank"
             rel="noopener noreferrer"
             className="bd-download mono"
             data-no-print
           >
-            [ Download ZIP{sizeLabel ? ` · ${sizeLabel}` : ''} ]
+            [ Download PDF{sizeLabel ? ` · ${sizeLabel}` : ''} ]
           </a>
         </aside>
 
